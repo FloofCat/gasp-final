@@ -58,7 +58,7 @@ class SuffixLLM:
         print("[SUFFIX-LLM] Model Trained: ", self.TRAINING)
     
     def load_dataset(self):
-        self.data = pd.read_csv(self.dataset)
+        self.data = pd.read_csv(self.dataset_path)
         self.training_data = self.data[:int(len(self.data)*self.SPLIT)]
         self.retraining_data = self.data[int(len(self.data)*self.SPLIT):]
     
