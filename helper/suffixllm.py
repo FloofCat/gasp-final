@@ -91,7 +91,7 @@ class SuffixLLM:
             lora_alpha=self.lora_alpha,
             target_modules=self.target_modules,
             lora_dropout=self.lora_dropout,
-            bias=False,
+            bias=self.bias,
             task_type="CAUSAL_LM"
         )
 

@@ -39,7 +39,7 @@ class ORPO:
             alpha=self.lora_alpha,
             dropout=self.lora_dropout,
             target_modules=self.target_modules,
-            bias=False,
+            bias=self.bias,
             task_type="CAUSAL_LM"
         )
 

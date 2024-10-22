@@ -17,7 +17,7 @@
             "lora_alpha": 0.5,
             "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "down_proj", "up_proj"],
             "lora_dropout": 0.1,
-            "bias": false
+            "bias": "none"
         },
         "suffix_logs": "./gasp-final/logs/suffix-logs.out"
     },
@@ -44,7 +44,7 @@
             "lora_alpha": 0.5,
             "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "down_proj", "up_proj"],
             "lora_dropout": 0.1,
-            "bias": false
+            "bias": "none"
         }
     }
 }
