@@ -1,0 +1,50 @@
+{
+    "seed": 42,
+    "model": {
+        "model_name": "llama3.1-8b",
+        "model_path": "./model-cache/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659/",
+        "device": "cuda:0",
+        "batch_size": 4,
+        "num_train_epochs": 3,
+        "warmup_steps": 500,
+        "weight_decay": 0.01,
+        "learning_rate": 5e-5,
+        "logging_steps": 100,
+        "logging_dir": "./gasp-final/logs/finetune-logs/",
+        "output_dir": "./gasp-final/logs/finetune-model/",
+        "lora": {
+            "r": 16,
+            "lora_alpha": 0.5,
+            "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "down_proj", "up_proj"],
+            "lora_dropout": 0.1,
+            "bias": false
+        },
+        "suffix_logs": "./gasp-final/logs/suffix-logs.out"
+    },
+    "inference": {
+        "max_length": 256,
+        "num_return_sequences": 1,
+        "temperature": 0.9,
+        "top_p": 0.95,
+        "repetition_penalty": 1.0,
+        "length_penalty": 1.0,
+        "max_suffix_length": 15
+    },
+    "orpo-training": {
+        "beta": 0.1,
+        "num_train_epochs": 10,
+        "warmup_steps": 500,
+        "weight_decay": 0.01,
+        "learning_rate": 2e-4,
+        "logging_steps": 100,
+        "logging_dir": "./gasp-final/logs/orpo-logs/",
+        "output_dir": "./gasp-final/logs/orpo-model/",
+        "lora": {
+            "r": 16,
+            "lora_alpha": 0.5,
+            "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "down_proj", "up_proj"],
+            "lora_dropout": 0.1,
+            "bias": false
+        }
+    }
+}
