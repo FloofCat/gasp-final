@@ -44,7 +44,6 @@ class Embeddings:
     
 class LBO:
     def __init__(self, config, model, tokenizer, blackbox, evaluator):
-        self.embeddings = Embeddings(model, tokenizer)
         self.config = config
         self.model = model
         self.tokenizer = tokenizer
@@ -60,6 +59,7 @@ class LBO:
         self.random_state = self.config["lbo_params"]["seed"]
         self.acq_optimizer = self.config["lbo_params"]["acq_optimizer"]
         self.searches = self.config["lbo_params"]["searches"]
+        self.embeddings = Embeddings(model, tokenizer, 2, self.random_state)
         print("Class: LBO Initialized")
 
     def reset(self, prompt, mapping):
