@@ -4,14 +4,10 @@ class Logging:
 
         # Clear the log file
         open(log_file, 'w').close()
-
-        self.log = open(log_file, 'a')
     
     def log(self, args):
-        self.log.write('----------------------\n')
-        for arg in args:
-            self.log.write(arg + '\n')
-        self.log.write('----------------------\n')
-
-    def close(self):
-        self.log.close()
+        with open(self.log_file, 'a') as log:
+            log.write('----------------------\n')
+            for arg in args:
+                log.write(arg + '\n')
+            log.write('----------------------\n')
