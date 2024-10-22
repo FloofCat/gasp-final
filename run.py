@@ -35,7 +35,7 @@ def main():
         suffix_llm.setup_inference()
 
         # Initialize necessary classes for ORPO
-        lbo = LBO(config.lbo_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
+        lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
         inference = Inference(config.inference_cfg, suffix_llm, lbo)
 
         # Generate the data via LBO
