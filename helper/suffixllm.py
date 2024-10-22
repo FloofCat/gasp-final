@@ -149,6 +149,8 @@ class SuffixLLM:
             del self.tokenizer
             torch.cuda.empty_cache()
 
+        self.load_dataset()
+
         self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
                                                             torch_dtype=torch.float16,
                                                             trust_remote_code=True).to(self.device)
