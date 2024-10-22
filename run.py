@@ -21,7 +21,7 @@ def main():
     # Initialize all necessary classes
     config = Config()
     blackbox = BlackBox(config.blackbox_cfg)
-    suffix_llm = SuffixLLM(config.suffix_cfg, config.data_cfg["dataset"]["data_path"])
+    suffix_llm = SuffixLLM(config.suffix_cfg, config.data_cfg)
     evaluator = Evaluator(config.evaluator_cfg)
 
     # Start by training the SuffixLLM

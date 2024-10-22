@@ -16,7 +16,7 @@ from peft import (
 )
 
 class SuffixLLM:
-    def __init__(self, config, dataset_path):
+    def __init__(self, config, dataset):
         # Training Directives
         self.config = config
         self.seed = self.config["seed"]
@@ -49,7 +49,9 @@ class SuffixLLM:
         self.max_suffix_length = self.config["inference"]["max_suffix_length"]
         
         self.logger = Logger(self.config["model"]["suffix_logs"])
-        self.dataset = dataset_path
+        self.dataset_name = dataset["dataset"]["name"]
+        self.dataset_path = dataset["dataset"]["data_path"]
+        self.SPLIT = dataset["dataset"]["split"]
         print("Class: SuffixLLM Initialized")
 
         self.TRAINING = self.check_if_trained()
