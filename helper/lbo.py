@@ -15,7 +15,7 @@ class Embeddings:
         embeddings = []
         with torch.no_grad():
             for suffix in suffixes:
-                inputs = self.tokenizer(suffix, return_tensors='pt', padding=True, truncation=True)
+                inputs = self.tokenizer(suffix, return_tensors='pt', padding=True, truncation=True).to(self.model.device)
                 outputs = self.model(**inputs, output_attentions=True, output_hidden_states=True)
                 hidden_states = outputs.hidden_states[-1]
                 suffix_embedding = hidden_states.mean(dim=1).squeeze().detach().cpu().numpy()
