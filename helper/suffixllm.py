@@ -2,7 +2,7 @@ import os
 import torch
 import pandas as pd
 from .loader import DatasetLoader
-from .logging import Logger
+from .logging import Logging
 from torch.utils.data import DataLoader
 from transformers import (
     AutoModelForCausalLM,
@@ -48,7 +48,7 @@ class SuffixLLM:
         self.length_penalty = self.config["inference"]["length_penalty"]
         self.max_suffix_length = self.config["inference"]["max_suffix_length"]
         
-        self.logger = Logger(self.config["model"]["suffix_logs"])
+        self.logger = Logging(self.config["model"]["suffix_logs"])
         self.dataset_name = dataset["dataset"]["name"]
         self.dataset_path = dataset["dataset"]["data_path"]
         self.SPLIT = dataset["dataset"]["split"]

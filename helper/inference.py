@@ -1,6 +1,6 @@
 import tqdm
 import pandas as pd
-from .logging import Logger
+from .logging import Logging
 
 class Inference:
     def __init__(self, config, suffix_llm, lbo):
@@ -9,7 +9,7 @@ class Inference:
         self.lbo = lbo
         self.embeddings = self.lbo.embeddings
 
-        self.logger = Logger(self.config["inference_logs"])
+        self.logger = Logging(self.config["inference_logs"])
         
         self.epoches = self.config["epochs"]
         self.inference_csv = self.config["infer_save"]

@@ -1,5 +1,5 @@
 import torch
-from .logging import Logger
+from .logging import Logging
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -21,7 +21,7 @@ class Evaluator:
         self.top_p = self.config['evaluator_params']['top_p']
         self.max_length = self.config['evaluator_params']['max_length']
 
-        self.logger = Logger(self.config['evaluator_model']['logging_file'])
+        self.logger = Logging(self.config['evaluator_model']['logging_file'])
         print("Class: Evaluator Initialized")
 
         # Load the evaluator task
