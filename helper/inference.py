@@ -20,7 +20,7 @@ class Inference:
         print("Class: Inference Initialized")
         
     def generate_data(self, data):
-        for i in tqdm(len(data)):
+        for i in tqdm.tqdm(range(data.shape[0])):
             last_score = 2
             epoch = 0
             searches = 0
