@@ -1,3 +1,6 @@
+import wandb
+wandb.init(mode="disabled")
+
 import argparse
 from helper.blackbox import BlackBox
 from helper.config import Config
