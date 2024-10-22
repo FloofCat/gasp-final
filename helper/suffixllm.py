@@ -143,10 +143,11 @@ class SuffixLLM:
         print("[SUFFIX-LLM] Inference Model (ORPO) Loaded")
 
     def setup_inference(self):
-        # Remove the model and tokenizer from memory
-        del self.model
-        del self.tokenizer
-        torch.cuda.empty_cache()
+        # Remove the model and tokenizer from memory, if they exist
+        if self.TRAINING == False:
+            del self.model
+            del self.tokenizer
+            torch.cuda.empty_cache()
 
         self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
                                                             torch_dtype=torch.float16,
