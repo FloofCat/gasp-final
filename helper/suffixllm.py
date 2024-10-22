@@ -2,7 +2,7 @@ import os
 import torch
 import pandas as pd
 from .loader import DatasetLoader
-from logging import Logger
+from .logging import Logger
 from torch.utils.data import DataLoader
 from transformers import (
     AutoModelForCausalLM,
@@ -61,6 +61,7 @@ class SuffixLLM:
         self.data = pd.read_csv(self.dataset_path)
         self.training_data = self.data[:int(len(self.data)*self.SPLIT)]
         self.retraining_data = self.data[int(len(self.data)*self.SPLIT):]
+        print("[SUFFIX-LLM] Dataset loaded; Training Data: ", len(self.training_data), " Retraining Data: ", len(self.retraining_data))
     
     def check_if_trained(self):
         # Check if model_name + "_finetuned" exists in the models directory

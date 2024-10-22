@@ -1,6 +1,6 @@
 import tqdm
 import pandas as pd
-from logging import Logger
+from .logging import Logger
 
 class Inference:
     def __init__(self, config, suffix_llm, lbo):

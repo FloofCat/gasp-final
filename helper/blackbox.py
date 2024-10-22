@@ -1,5 +1,5 @@
 import torch
-from logging import Logger
+from .logging import Logger
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
