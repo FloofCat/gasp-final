@@ -52,7 +52,7 @@ class Evaluator:
         inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
         inputs = {key: tensor.to(self.model.device) for key, tensor in inputs.items()}
         
-        outputs = self.model.generate(**inputs, max_length=self.max_length, temperature=self.temperature, top_p=self.top_p)
+        outputs = self.model.generate(**inputs, max_length=len(response) + self.max_length, temperature=self.temperature, top_p=self.top_p)
         
         llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True) 
                 
