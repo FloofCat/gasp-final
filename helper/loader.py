@@ -19,8 +19,8 @@ class DatasetLoader(Dataset):
         # I want to add a delimiter between each suffix so I can access the output easier later on
         suffix_text = ""
         for suffix in suffixes:
-            suffix_text += f'| {suffix} |'
-        input_text = goal + ' ' + suffix_text
+            suffix_text += f' {suffix} |'
+        input_text = goal + ' |' + suffix_text
 
         inputs = self.tokenizer(input_text, return_tensors='pt', max_length=self.max_length, truncation=True, padding='max_length')
         labels = inputs.input_ids.clone()
