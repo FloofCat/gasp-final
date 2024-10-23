@@ -20,7 +20,7 @@ class Embeddings:
                 hidden_states = outputs.hidden_states[-1]
                 suffix_embedding = hidden_states.mean(dim=1).squeeze().detach().cpu().numpy()
                 embeddings.append(suffix_embedding)
-        return embeddings
+        return np.array(embeddings)
     
     def dimensionality_reduction(self, embeddings):
         tsne = TSNE(n_components=self.reduced_dim, perplexity=min(max(embeddings.shape[0] - 1, 1), 30), random_state=self.seed)  
