@@ -21,6 +21,7 @@ class ORPO:
         self.logging_steps = self.config["orpo-training"]["logging_steps"]
         self.logging_dir = self.config["orpo-training"]["logging_dir"]
         self.output_dir = self.config["orpo-training"]["output_dir"]
+        self.batch_size = self.config["orpo-training"]["batch_size"]
 
         self.lora_r = self.config["orpo-training"]["lora"]["r"]
         self.lora_alpha = self.config["orpo-training"]["lora"]["lora_alpha"]
@@ -70,7 +71,8 @@ class ORPO:
             logging_steps=self.logging_steps,
             logging_dir=self.logging_dir,
             output_dir=self.output_dir,
-            auto_find_batch_size=True,
+            per_device_train_batch_size=self.batch_size,
+            per_device_eval_batch_size=4,
             bf16=True,
             save_strategy='epoch'
         )
