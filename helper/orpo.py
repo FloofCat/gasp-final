@@ -72,7 +72,7 @@ class ORPO:
             logging_dir=self.logging_dir,
             output_dir=self.output_dir,
             per_device_train_batch_size=self.batch_size,
-            per_device_eval_batch_size=4,
+            per_device_eval_batch_size=1,
             bf16=True,
             save_strategy='epoch'
         )
