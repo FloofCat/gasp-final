@@ -134,7 +134,7 @@ class SuffixLLM:
 
     def setup_inference(self):
         # Remove the model and tokenizer from memory, if they exist
-        if self.TRAINING == False or hasattr(self, 'model') == False:
+        if self.TRAINING == False or hasattr(self, 'model') == True:
             del self.model
             del self.tokenizer
             torch.cuda.empty_cache()
