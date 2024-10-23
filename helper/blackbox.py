@@ -36,13 +36,15 @@ class BlackBox:
         print("[BlackBox] Model Loaded")
 
     def query(self, prompt):
-        chat = {"role": "user", "content": prompt}
+        chat = [
+            {"role": "system", "content": "You are a helpful AI assistant."},
+            {"role": "user", "content": prompt}
+        ]
         
-        llm_response = self.pipe([chat], 
+        llm_response = self.pipe(chat, 
                                  max_length=self.max_length, 
                                  temperature=self.temperature, 
-                                 top_p=self.top_p, 
-                                 return_prompt=True)[0]["generated_text"][-1]["content"]
+                                 top_p=self.top_p)[0]["generated_text"][-1]["content"]
         
         self.logger.log(["PROMPT: " + prompt, "BLACKBOX-RESPONSE: " + llm_response])
         return llm_response
