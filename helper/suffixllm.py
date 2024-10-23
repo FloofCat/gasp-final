@@ -133,9 +133,10 @@ class SuffixLLM:
         print("[SUFFIX-LLM] Training Completed")
 
     def load_inference_orpo(self):
-        del self.model
-        del self.tokenizer
-        torch.cuda.empty_cache()
+        if self.TRAINING == False:
+            del self.model
+            del self.tokenizer
+            torch.cuda.empty_cache()
 
         self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
                                                             torch_dtype=torch.float16,
