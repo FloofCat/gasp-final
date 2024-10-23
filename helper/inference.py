@@ -34,7 +34,7 @@ class Inference:
                 embeddings = self.embeddings.get_embeddings(suffixes)
                 
                 # If no embeddings are found
-                if(embeddings.shape[0] - 1 == 0):
+                if(embeddings.shape[0] - 1 <= 0):
                     continue
                 
                 reduced_embeddings = self.embeddings.dimensionality_reduction(embeddings)
