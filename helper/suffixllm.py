@@ -59,6 +59,10 @@ class SuffixLLM:
     
     def load_dataset(self):
         self.data = pd.read_csv(self.dataset_path)
+        
+        # Shuffle the data
+        self.data = self.data.sample(frac=1, random_state=self.seed).reset_index(drop=True)
+        
         self.training_data = self.data[:int(len(self.data)*self.SPLIT)]
         self.retraining_data = self.data[int(len(self.data)*self.SPLIT):]
         print("[SUFFIX-LLM] Dataset loaded; Training Data: ", len(self.training_data), " Retraining Data: ", len(self.retraining_data))
