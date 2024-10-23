@@ -28,7 +28,7 @@
         "top_p": 0.95,
         "repetition_penalty": 1.0,
         "length_penalty": 1.0,
-        "max_suffix_length": 15
+        "max_suffix_length": 25
     },
     "orpo-training": {
         "beta": 0.1,

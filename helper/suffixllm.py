@@ -185,7 +185,7 @@ class SuffixLLM:
             suffixes.append(i.strip())
 
         # Remove if there are any empty suffixes and if the suffix is beyond the limit
-        suffixes = [suffix for suffix in suffixes if suffix != "" and len(suffix) < self.max_suffix_length]
+        suffixes = [suffix for suffix in suffixes if suffix != "" and len(suffix.split()) < self.max_suffix_length]
         
         self.logger.log(["PROMPT: " + prompt, "SUFFIXES: " + str(suffixes)])
         return suffixes, generated_text
