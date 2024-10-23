@@ -55,7 +55,8 @@ class Evaluator:
         outputs = self.model.generate(**inputs, max_length=len(response) + self.max_length, temperature=self.temperature, top_p=self.top_p)
         
         llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True) 
-                
+        print(llm_response)
+        
         net_score = 0
         
         for line in llm_response.split("\n"):
