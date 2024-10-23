@@ -106,7 +106,7 @@ class LBO:
         res = gp_minimize(
                         self.f, 
                         space, 
-                        acq_func=self.ACQUISTION_FUNCTION, 
+                        acq_func=self.acq_fn,
                         n_calls=self.n_calls,
                         random_state=self.random_state,
                         acq_optimizer=self.acq_optimizer,
