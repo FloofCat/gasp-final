@@ -38,7 +38,7 @@ class BlackBox:
     def query(self, prompt):
         chat = {"role": "user", "content": prompt}
         
-        llm_response = self.pipe(chat, 
+        llm_response = self.pipe([chat], 
                                  max_length=self.max_length, 
                                  temperature=self.temperature, 
                                  top_p=self.top_p, 
