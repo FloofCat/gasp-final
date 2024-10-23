@@ -69,7 +69,7 @@ class SuffixLLM:
     
     def check_if_trained(self):
         # Check if model_name + "_finetuned" exists in the models directory
-        if not os.path.exists(f"./gasp-final/models/{self.model_name}_finetuned"):
+        if not os.path.exists(f"./gasp-final-copy/models/{self.model_name}_finetuned"):
             return False
         return True
     
@@ -128,8 +128,8 @@ class SuffixLLM:
         print("[SUFFIX-LLM] Training Started")
 
         self.trainer.train()
-        self.model.save_pretrained(f"./gasp-final/models/{self.model_name}_finetuned")
-        self.tokenizer.save_pretrained(f"./gasp-final/models/{self.model_name}_finetuned")
+        self.model.save_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned")
+        self.tokenizer.save_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned")
         print("[SUFFIX-LLM] Training Completed")
 
     def setup_inference(self):
@@ -141,10 +141,10 @@ class SuffixLLM:
 
         self.load_dataset()
 
-        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
+        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned",
                                                             torch_dtype=torch.float16,
                                                             trust_remote_code=True).to(self.device)
-        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
+        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned",
                                                         trust_remote_code=True,
                                                         use_fast=False)
         self.tokenizer.pad_token = self.tokenizer.eos_token

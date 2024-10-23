@@ -2,10 +2,10 @@ import json
 
 class Config:
     def __init__(self):
-        self.suffix_cfg = self.load_config("./gasp-final/config/suffix_llm.json")
-        self.evaluator_cfg = self.load_config("./gasp-final/config/evaluator.json")
-        self.data_cfg = self.load_config("./gasp-final/config/data.json")
-        self.blackbox_cfg = self.load_config("./gasp-final/config/blackbox.json")
+        self.suffix_cfg = self.load_config("./gasp-final-copy/config/suffix_llm.json")
+        self.evaluator_cfg = self.load_config("./gasp-final-copy/config/evaluator.json")
+        self.data_cfg = self.load_config("./gasp-final-copy/config/data.json")
+        self.blackbox_cfg = self.load_config("./gasp-final-copy/config/blackbox.json")
         print("Class: Config Initialized")
 
     def load_config(self, config_file):

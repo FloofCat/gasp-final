@@ -8,12 +8,12 @@
         "n_initial_points": 2,
         "searches": 2
     },
-    "inference_logs": "./gasp-final/logs/inference-logs.out",
+    "inference_logs": "./gasp-final-copy/logs/inference-logs.out",
     "epochs": 10,
-    "infer_save": "./gasp-final/logs/inference.csv",
+    "infer_save": "./gasp-final-copy/logs/inference.csv",
     "dataset": {
         "name": "gasp-dataset",
-        "data_path": "./gasp-final/data/harmful_suffixes.csv",
+        "data_path": "./gasp-final-copy/data/harmful_suffixes.csv",
         "split": 0.98
     }
 }
