@@ -15,5 +15,10 @@
         "name": "gasp-dataset",
         "data_path": "./gasp-final/data/harmful_suffixes.csv",
         "split": 0.8
+    },
+    "advbench": {
+        "name": "advbench",
+        "data_path": "./gasp-final/data/advbench.csv",
+        "split": 0.8
     }
 }
