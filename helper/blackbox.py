@@ -32,7 +32,6 @@ class BlackBox:
                                                         trust_remote_code=True,
                                                         use_fast=False)
         self.tokenizer.pad_token = self.tokenizer.eos_token
-        self.pipe = pipeline('text-generation', model=self.model, tokenizer=self.tokenizer, device=self.device)
         print("[BlackBox] Model Loaded")
 
     def query(self, prompt):
@@ -41,10 +40,13 @@ class BlackBox:
             {"role": "user", "content": prompt}
         ]
         
-        llm_response = self.pipe(chat, 
-                                 max_length=self.max_length, 
-                                 temperature=self.temperature, 
-                                 top_p=self.top_p)[0]["generated_text"][-1]["content"]
+        formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
+        inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
+        inputs = {key: tensor.to(self.model.device) for key, tensor in inputs.items()}
+        
+        outputs = self.model.generate(**inputs, max_length=self.max_length, temperature=self.temperature, top_p=self.top_p)
+        
+        llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True)
         
         self.logger.log(["PROMPT: " + prompt, "BLACKBOX-RESPONSE: " + llm_response])
         return llm_response

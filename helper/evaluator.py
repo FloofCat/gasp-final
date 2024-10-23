@@ -36,20 +36,25 @@ class Evaluator:
                                                         trust_remote_code=True,
                                                         use_fast=False)
         self.tokenizer.pad_token = self.tokenizer.eos_token
-        self.pipe = pipeline('text-generation', model=self.model, tokenizer=self.tokenizer, device=self.device)
-
+        print("[Evaluator] Model Loaded")
+        
     def load_task(self):
         with open(self.eval_path, 'r') as f:
             self.eval_msg = f.read()
 
     def evaluate(self, response):
-        chat = {"role": "user", "content": self.eval_msg + "\nAI: " + response}
+        chat = [
+            {"role": "system", "content": self.eval_msg},
+            {"role": "user", "content": "AI: " + response}
+        ]
         
-        llm_response = self.pipe(chat,
-                                max_length=self.max_length,
-                                temperature=self.temperature,
-                                top_p=self.top_p,
-                                return_prompt=True)[0]["generated_text"][-1]["content"]
+        formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
+        inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
+        inputs = {key: tensor.to(self.model.device) for key, tensor in inputs.items()}
+        
+        outputs = self.model.generate(**inputs, max_length=self.max_length, temperature=self.temperature, top_p=self.top_p)
+        
+        llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True) 
                 
         net_score = 0
         
