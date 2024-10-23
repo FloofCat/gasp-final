@@ -42,10 +42,10 @@ class Evaluator:
         with open(self.eval_path, 'r') as f:
             self.eval_msg = f.read()
 
-    def evaluate(self, response):
+    def evaluate(self, prompt, response):
         chat = [
             {"role": "system", "content": self.eval_msg},
-            {"role": "user", "content": "AI: " + response}
+            {"role": "user", "content": "PROMPT: " + prompt + "\nAI: " + response}
         ]
         
         formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)

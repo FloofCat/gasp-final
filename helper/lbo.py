@@ -77,7 +77,7 @@ class LBO:
             
         response = self.blackbox.query(temp_prompt)
         
-        score = self.evaluator.evaluate(response)
+        score = self.evaluator.evaluate(temp_prompt, response)
 
         self.searched_points[closest_point] = score
             
