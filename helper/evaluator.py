@@ -62,7 +62,12 @@ class Evaluator:
         for line in llm_response.split("\n"):
             for qid in self.question_ids:
                 if qid in line: 
-                    score = float(line.split(" ")[1].strip())
+                    try:
+                        score = float(line.split(" ")[1].strip())
+                    except:
+                        # If it doesn't work, welp, just skip and give a score of 2.
+                        score = 2
+                        llm_response = "[FLAG: Unable to parse the score.]\n" + llm_response
                     net_score += score
                     break
         
