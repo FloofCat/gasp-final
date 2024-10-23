@@ -77,7 +77,7 @@ class ORPO:
 
         trainer = ORPOTrainer(
             model=self.model,
-            config=orpo_config,
+            args=orpo_config,
             train_dataset=dataset,
             tokenizer=self.tokenizer
         )
