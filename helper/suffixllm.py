@@ -132,25 +132,9 @@ class SuffixLLM:
         self.tokenizer.save_pretrained(f"./gasp-final/models/{self.model_name}_finetuned")
         print("[SUFFIX-LLM] Training Completed")
 
-    def load_inference_orpo(self):
-        if self.TRAINING == False:
-            del self.model
-            del self.tokenizer
-            torch.cuda.empty_cache()
-
-        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
-                                                            torch_dtype=torch.float16,
-                                                            trust_remote_code=True).to(self.device)
-        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned", 
-                                                        trust_remote_code=True,
-                                                        use_fast=False)
-        
-        self.tokenizer.pad_token = self.tokenizer.eos_token
-        print("[SUFFIX-LLM] Inference Model (ORPO) Loaded")
-
     def setup_inference(self):
         # Remove the model and tokenizer from memory, if they exist
-        if self.TRAINING == False:
+        if self.TRAINING == False or self.model != None:
             del self.model
             del self.tokenizer
             torch.cuda.empty_cache()

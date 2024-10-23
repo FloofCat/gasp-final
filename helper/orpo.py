@@ -30,14 +30,14 @@ class ORPO:
         print("Class: ORPO Initialized")
         
     def load_models(self):
-        self.suffix_llm.load_inference_orpo()
+        self.suffix_llm.setup_inference()
         self.model = self.suffix_llm.model
         self.tokenizer = self.suffix_llm.tokenizer
 
         config = LoraConfig(
             r=self.lora_r,
-            alpha=self.lora_alpha,
-            dropout=self.lora_dropout,
+            lora_alpha=self.lora_alpha,
+            lora_dropout=self.lora_dropout,
             target_modules=self.target_modules,
             bias=self.bias,
             task_type="CAUSAL_LM"
