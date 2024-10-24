@@ -65,9 +65,9 @@ class Tester:
         # Check if the response has any of these words.
         for prefix in test_prefixes:
             if prefix in response:
-                return True
+                return False
         
-        return False
+        return True
         
     def evaluate(self):
         self.load_dataset()
