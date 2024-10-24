@@ -12,7 +12,7 @@ from helper.suffixllm import SuffixLLM
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--task', type=str, default='train')
+    parser.add_argument('--task', type=str, default='pre-train')
 
     args = parser.parse_args()
     return args
@@ -23,12 +23,13 @@ def main():
 
     # Initialize all necessary classes
     config = Config()
-    blackbox = BlackBox(config.blackbox_cfg)
     suffix_llm = SuffixLLM(config.suffix_cfg, config.data_cfg)
-    evaluator = Evaluator(config.evaluator_cfg)
 
     # Start by training the SuffixLLM
-    if args.task == 'train':
+    if args.task == 'pre-train':
+        evaluator = Evaluator(config.evaluator_cfg)
+        blackbox = BlackBox(config.blackbox_cfg)
+
         suffix_llm.train_model()
 
         # Once trained, we need to set it to eval mode.
@@ -41,10 +42,12 @@ def main():
         # Generate the data via LBO
         inference.generate_data(suffix_llm.retraining_data)
 
-        # Train the ORPO model now
+        print("Pre-training complete!")
+        
+    elif args.task == 'train':
         orpo = ORPO(config.suffix_cfg, suffix_llm)
         orpo.train(config.data_cfg["infer_save"])
-
+        
         print("Training complete!")
 
 # Run.

@@ -32,8 +32,6 @@ class ORPO:
         
     def load_models(self):
         self.suffix_llm.setup_inference()
-        self.model = self.suffix_llm.model
-        self.tokenizer = self.suffix_llm.tokenizer
 
         config = LoraConfig(
             r=self.lora_r,
@@ -44,7 +42,7 @@ class ORPO:
             task_type="CAUSAL_LM"
         )
 
-        self.model = get_peft_model(self.model, config)
+        self.suffix_llm.model = get_peft_model(self.suffix_llm.model, config)
 
     def train(self, dataset_path):
         self.load_models()
@@ -78,10 +76,10 @@ class ORPO:
         )
 
         trainer = ORPOTrainer(
-            model=self.model,
+            model=self.suffix_llm.model,
             args=orpo_config,
             train_dataset=dataset,
-            tokenizer=self.tokenizer
+            tokenizer=self.suffix_llm.tokenizer
         )
 
         print("[ORPO] Training Started")

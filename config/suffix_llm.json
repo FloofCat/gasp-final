@@ -39,7 +39,7 @@
         "logging_steps": 100,
         "logging_dir": "./gasp-final-copy/logs/orpo-logs/",
         "output_dir": "./gasp-final-copy/logs/orpo-model/",
-        "batch_size": 2,
+        "batch_size": 1,
         "lora": {
             "r": 16,
             "lora_alpha": 0.5,
