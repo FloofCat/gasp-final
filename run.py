@@ -6,6 +6,7 @@ from helper.blackbox import BlackBox
 from helper.config import Config
 from helper.inference import Inference
 from helper.evaluator import Evaluator
+from helper.tester import Tester
 from helper.lbo import LBO
 from helper.orpo import ORPO
 from helper.suffixllm import SuffixLLM
@@ -49,6 +50,14 @@ def main():
         orpo.train(config.data_cfg["infer_save"])
         
         print("Training complete!")
+
+    elif args.task == 'eval':
+        blackbox = BlackBox(config.blackbox_cfg)
+        
+        tester = Tester(config.data_cfg, suffix_llm, blackbox)
+        tester.test()
+        
+        print("Evaluation complete!")
 
 # Run.
 main()

@@ -145,7 +145,7 @@ class SuffixLLM:
                                                             torch_dtype=torch.float16,
                                                             trust_remote_code=True,
                                                             device_map="auto")
-        # .to(self.device)
+        # .to(self.device) -- Seems like ORPO hates this. OOM at all times.
         self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned",
                                                         trust_remote_code=True,
                                                         use_fast=False)
@@ -160,7 +160,8 @@ class SuffixLLM:
         
         self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_orpo",
                                                             torch_dtype=torch.float16,
-                                                            trust_remote_code=True).to(self.device)
+                                                            trust_remote_code=True,
+                                                            device_map="auto")
         self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_orpo",
                                                         trust_remote_code=True,
                                                         use_fast=False)

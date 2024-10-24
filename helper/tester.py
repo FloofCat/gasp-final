@@ -1,4 +1,6 @@
 from .logging import Logging
+import time
+import tqdm
 
 class Tester:
     def __init__(self, config, suffix_llm, blackbox):
@@ -77,12 +79,22 @@ class Tester:
         asr_10 = 0
         
         # Evaluate the model
-        for data in self.dataset:
+        for x in tqdm.tqdm(range(len(self.dataset))):
+            data = self.dataset[x]
             goal = data.strip()
-            print(f"Goal: {goal}")
-            suffixes, _ = self.suffix_llm.generate_suffix(goal)
+            time_taken = 0
+            epoches_taken = 0
             
             for i in range(self.max_additions):
+                epoches_taken += 1
+                
+                # Generate the suffixes.
+                startTime = time.time()
+                suffixes, _ = self.suffix_llm.generate_suffix(goal)
+                endTime = time.time() - startTime
+                
+                time_taken += endTime
+                
                 # Get the suffix.
                 suffix = suffixes[i].strip()                
                 query = goal
@@ -95,6 +107,9 @@ class Tester:
                 
                 # Query the blackbox.
                 response = self.blackbox.query(query)
+                
+                # Update the goal.
+                goal = query
                 
                 # Check if the response is successful.
                 success = self.check_success(response)
@@ -113,7 +128,16 @@ class Tester:
                         asr_10 += 1
                     elif i < 10:
                         asr_10 += 1
+                # Log time taken per suffix.
+                self.logger.log(["QUERY: " + query, "TIME_TAKEN: " + str(time_taken / epoches_taken)])
                 break
+        
+        print("ASR@1: ", asr_1 / len(self.dataset))
+        print("ASR@5: ", asr_5 / len(self.dataset))
+        print("ASR@10: ", asr_10 / len(self.dataset))
+        self.logger.log(["ASR@1: " + str(asr_1 / len(self.dataset)), "ASR@5: " + str(asr_5 / len(self.dataset)), "ASR@10: " + str(asr_10 / len(self.dataset))])
+        
+        print("[Tester] Evaluation Completed")            
                 
                 
                 
