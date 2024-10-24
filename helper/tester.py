@@ -93,10 +93,16 @@ class Tester:
                 suffixes, _ = self.suffix_llm.generate_suffix(goal)
                 endTime = time.time() - startTime
                 
+                if len(suffixes) == 0:
+                    i -= 1
+                    continue
+                
                 time_taken += endTime
                 
                 # Get the suffix.
-                suffix = suffixes[i].strip()                
+                suffix = suffixes[i].strip() 
+                # Remove the last character, which is a period.
+                suffix = suffix[:-1]               
                 query = goal
                 
                 # If the suffix starts with a ., no space.
