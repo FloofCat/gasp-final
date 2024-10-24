@@ -19,5 +19,7 @@
     "eval_dataset": {
         "name": "gasp-eval",
         "data_path": "./gasp-final-copy/data/advsuffixes_eval.txt"
-    }
+    },
+    "eval_logs": "./gasp-final-copy/logs/eval-logs.out",
+    "eval_max_suffix_additions": 10
 }

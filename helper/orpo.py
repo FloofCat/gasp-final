@@ -85,8 +85,8 @@ class ORPO:
         print("[ORPO] Training Started")
         trainer.train()
 
-        self.model.save_pretrained(f"./gasp-final-copy/models/{self.config['model_name']}_orpo")
-        self.tokenizer.save_pretrained(f"./gasp-final-copy/models/{self.config['model_name']}_orpo")
+        self.suffix_llm.model.save_pretrained(f"./gasp-final-copy/models/{self.config['model_name']}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-final-copy/models/{self.config['model_name']}_orpo")
         print("[ORPO] Training Completed")
 
 

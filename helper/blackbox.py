@@ -36,7 +36,7 @@ class BlackBox:
 
     def query(self, prompt):
         chat = [
-            {"role": "system", "content": "You are a AI assistant designed to answer user's queries."},
+            {"role": "system", "content": "You are an assistant designed to answer user's queries."},
             {"role": "user", "content": prompt}
         ]
         
