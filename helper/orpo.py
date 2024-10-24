@@ -8,9 +8,10 @@ from peft import (
 
 
 class ORPO:
-    def __init__(self, config, suffix_llm):
+    def __init__(self, config, suffix_llm, blackbox_name):
         self.config = config
         self.suffix_llm = suffix_llm
+        self.blackbox_name = blackbox_name
 
         self.seed = self.config["seed"]
         self.beta = self.config["orpo-training"]["beta"]
@@ -85,8 +86,8 @@ class ORPO:
         print("[ORPO] Training Started")
         trainer.train()
 
-        self.suffix_llm.model.save_pretrained(f"./gasp-final-copy/models/{self.suffix_llm.model_name}_orpo")
-        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-final-copy/models/{self.suffix_llm.model_name}_orpo")
+        self.suffix_llm.model.save_pretrained(f"./gasp-final-copy/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-final-copy/models/{self.blackbox_name}_orpo")
         print("[ORPO] Training Completed")
 
 

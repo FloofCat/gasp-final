@@ -46,7 +46,7 @@ def main():
         print("Pre-training complete!")
         
     elif args.task == 'train':
-        orpo = ORPO(config.suffix_cfg, suffix_llm)
+        orpo = ORPO(config.suffix_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
         orpo.train(config.data_cfg["infer_save"])
         
         print("Training complete!")
