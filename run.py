@@ -55,7 +55,7 @@ def main():
         blackbox = BlackBox(config.blackbox_cfg)
         
         tester = Tester(config.data_cfg, suffix_llm, blackbox)
-        tester.test()
+        tester.evaluate()
         
         print("Evaluation complete!")
 
