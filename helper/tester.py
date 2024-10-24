@@ -128,9 +128,9 @@ class Tester:
                         asr_10 += 1
                     elif i < 10:
                         asr_10 += 1
-                # Log time taken per suffix.
-                self.logger.log(["QUERY: " + query, "TIME_TAKEN: " + str(time_taken / epoches_taken)])
-                break
+                    # Log time taken per suffix.
+                    self.logger.log(["QUERY: " + query, "TIME_TAKEN: " + str(time_taken / epoches_taken)])
+                    break
         
         print("ASR@1: ", asr_1 / len(self.dataset))
         print("ASR@5: ", asr_5 / len(self.dataset))
