@@ -152,17 +152,17 @@ class SuffixLLM:
         self.tokenizer.pad_token = self.tokenizer.eos_token
         print("[SUFFIX-LLM] Inference Model Loaded")
         
-    def load_orpo_model(self):
+    def load_orpo_model(self, blackbox_name):
         if hasattr(self, 'model') == True:
             del self.model
             del self.tokenizer
             torch.cuda.empty_cache()
         
-        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_orpo",
+        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final-copy/models/{blackbox_name}_orpo",
                                                             torch_dtype=torch.float16,
                                                             trust_remote_code=True,
                                                             device_map="auto")
-        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_orpo",
+        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final-copy/models/{blackbox_name}_orpo",
                                                         trust_remote_code=True,
                                                         use_fast=False)
         

@@ -71,7 +71,7 @@ class Tester:
         
     def evaluate(self):
         self.load_dataset()
-        self.suffix_llm.load_orpo_model()
+        self.suffix_llm.load_orpo_model(self.blackbox)
         
         # Baseline variables
         asr_1 = 0
