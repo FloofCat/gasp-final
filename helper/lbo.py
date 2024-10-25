@@ -156,7 +156,7 @@ class LBO:
         # Allow for searching for N times to create a more refined model
         if last_score < res.fun:
             if searches <= self.searches:
-                return None, None, None, None
+                return None, None, None, None, None
             else:
                 return self.lbo(prompt, mapping, res.fun, searches + 1)
         
