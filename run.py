@@ -24,8 +24,6 @@ def main():
     # Initialize all necessary classes
     config = Config()
     suffix_llm = SuffixLLM(config.suffix_cfg, config.data_cfg)
-    evaluator = Evaluator(config.evaluator_cfg)
-    blackbox = BlackBox(config.blackbox_cfg)
     
     # Start by training the SuffixLLM
     if args.task == 'train':
@@ -35,6 +33,8 @@ def main():
         
     elif args.task == 'eval':
         # You need to train the SuffixLLM first before evaluating
+        evaluator = Evaluator(config.evaluator_cfg)
+        blackbox = BlackBox(config.blackbox_cfg)
         suffix_llm.setup_inference()
         
         # Initialize LBO and Inference.
