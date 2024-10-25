@@ -100,7 +100,7 @@ class Tester:
                 time_taken += endTime
                 
                 # Get the suffix.
-                suffix = suffixes[i].strip() 
+                suffix = suffixes[0].strip() 
                 # Remove the last character, which is a period.
                 suffix = suffix[:-1]               
                 query = goal
