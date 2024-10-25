@@ -17,7 +17,7 @@
         "name": "gasp-dataset",
         "data_path": "./gasp-final/data/advsuffixes_eval.txt"
     },
-    "re-search": true,
+    "re_search": true,
     "eval_logs": "./gasp-final/logs/inference-logs.out",
     "epochs": 10,
     "inference_save": "./gasp-final/logs/inference.csv"
