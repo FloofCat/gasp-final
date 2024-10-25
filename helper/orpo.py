@@ -30,35 +30,13 @@ class ORPO:
         self.target_modules = self.config["orpo-training"]["lora"]["target_modules"]
         self.bias = self.config["orpo-training"]["lora"]["bias"]
         print("Class: ORPO Initialized")
-        
-    def load_models(self):
-        self.suffix_llm.setup_inference()
 
-        config = LoraConfig(
-            r=self.lora_r,
-            lora_alpha=self.lora_alpha,
-            lora_dropout=self.lora_dropout,
-            target_modules=self.target_modules,
-            bias=self.bias,
-            task_type="CAUSAL_LM"
-        )
-
-        self.suffix_llm.model = get_peft_model(self.suffix_llm.model, config)
-
-    def train(self, dataset_path):
-        self.load_models()
-        self.dataset = pd.read_csv(dataset_path)
-        
-        # Get prompt, chosen, rejected
-        self.prompt = self.dataset["prompt"]
-        self.chosen = self.dataset["chosen"]
-        self.rejected = self.dataset["rejected"]
-
+    def train(self, prompt, chosen_string, rejected_string):
         # Get HFDataset from dictionary
         dataset = HFDataset.from_dict({
-            "prompt": self.prompt,
-            "chosen": self.chosen,
-            "rejected": self.rejected
+            "prompt": prompt,
+            "chosen": chosen_string,
+            "rejected": rejected_string
         })
 
         orpo_config = ORPOConfig(
@@ -75,6 +53,9 @@ class ORPO:
             bf16=True,
             save_strategy='epoch'
         )
+        
+        # Set model in training mode
+        self.suffix_llm.model.train()
 
         trainer = ORPOTrainer(
             model=self.suffix_llm.model,
@@ -85,11 +66,15 @@ class ORPO:
 
         print("[ORPO] Training Started")
         trainer.train()
-
-        self.suffix_llm.model.save_pretrained(f"./gasp-final-copy/models/{self.blackbox_name}_orpo")
-        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-final-copy/models/{self.blackbox_name}_orpo")
+        
+        # Restore model to eval mode
+        self.suffix_llm.model.eval()
         print("[ORPO] Training Completed")
 
+    def save(self):
+        self.suffix_llm.model.save_pretrained(f"./gasp-final/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-final/models/{self.blackbox_name}_orpo")
+        print("[ORPO] Completed training and saved")
 
 
         

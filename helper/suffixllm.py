@@ -69,7 +69,7 @@ class SuffixLLM:
     
     def check_if_trained(self):
         # Check if model_name + "_finetuned" exists in the models directory
-        if not os.path.exists(f"./gasp-final-copy/models/{self.model_name}_finetuned"):
+        if not os.path.exists(f"./gasp-final/models/{self.model_name}_finetuned"):
             return False
         return True
     
@@ -128,8 +128,8 @@ class SuffixLLM:
         print("[SUFFIX-LLM] Training Started")
 
         self.trainer.train()
-        self.model.save_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned")
-        self.tokenizer.save_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned")
+        self.model.save_pretrained(f"./gasp-final/models/{self.model_name}_finetuned")
+        self.tokenizer.save_pretrained(f"./gasp-final/models/{self.model_name}_finetuned")
         print("[SUFFIX-LLM] Training Completed")
 
     def setup_inference(self):
@@ -141,34 +141,20 @@ class SuffixLLM:
 
         self.load_dataset()
 
-        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned",
+        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
                                                             torch_dtype=torch.float16,
                                                             trust_remote_code=True,
                                                             device_map="auto")
         # .to(self.device) -- Seems like ORPO hates this. OOM at all times.
-        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final-copy/models/{self.model_name}_finetuned",
+        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final/models/{self.model_name}_finetuned",
                                                         trust_remote_code=True,
                                                         use_fast=False)
         self.tokenizer.pad_token = self.tokenizer.eos_token
+        
+        # Set the model to eval mode
+        self.model.eval()
+        
         print("[SUFFIX-LLM] Inference Model Loaded")
-        
-    def load_orpo_model(self, blackbox_name):
-        if hasattr(self, 'model') == True:
-            del self.model
-            del self.tokenizer
-            torch.cuda.empty_cache()
-        
-        self.model = AutoModelForCausalLM.from_pretrained(f"./gasp-final-copy/models/{blackbox_name}_orpo",
-                                                            torch_dtype=torch.float16,
-                                                            trust_remote_code=True,
-                                                            device_map="auto")
-        self.tokenizer = AutoTokenizer.from_pretrained(f"./gasp-final-copy/models/{blackbox_name}_orpo",
-                                                        trust_remote_code=True,
-                                                        use_fast=False)
-        
-        self.tokenizer.pad_token = self.tokenizer.eos_token
-        
-        print("[SUFFIX-LLM] ORPO Model Loaded")
     
     def generate_suffix(self, prompt):
         inputs = self.tokenizer(prompt, return_tensors='pt', max_length=512, truncation=True, padding=True).to(self.device)

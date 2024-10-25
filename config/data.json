@@ -1,25 +1,24 @@
 {
     "HF_API_KEY": "",
     "lbo_params": {
-        "acquisition_function": "EI",
+        "acquisition_function": "LCB",
         "n_calls": 10,
         "seed": 42,
         "acq_optimizer": "sampling",
         "n_initial_points": 2,
         "searches": 2
     },
-    "inference_logs": "./gasp-final-copy/logs/inference-logs.out",
-    "epochs": 10,
-    "infer_save": "./gasp-final-copy/logs/inference.csv",
     "dataset": {
         "name": "gasp-dataset",
-        "data_path": "./gasp-final-copy/data/harmful_suffixes.csv",
-        "split": 0.98
+        "data_path": "./gasp-final/data/harmful_suffixes.csv",
+        "split": 0.8
     },
     "eval_dataset": {
-        "name": "gasp-eval",
-        "data_path": "./gasp-final-copy/data/advsuffixes_eval.txt"
+        "name": "gasp-dataset",
+        "data_path": "./gasp-final/data/advsuffixes_eval.txt"
     },
-    "eval_logs": "./gasp-final-copy/logs/eval-logs.out",
-    "eval_max_suffix_additions": 10
+    "re-search": true,
+    "eval_logs": "./gasp-final/logs/inference-logs.out",
+    "epochs": 10,
+    "inference_save": "./gasp-final/logs/inference.csv"
 }
