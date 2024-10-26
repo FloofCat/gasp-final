@@ -14,7 +14,7 @@
     "dataset": {
         "name": "gasp-dataset",
         "data_path": "./gasp-final/data/harmful_suffixes.csv",
-        "split": 0.98
+        "split": 0.95
     },
     "eval_dataset": {
         "name": "gasp-eval",
