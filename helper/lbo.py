@@ -154,10 +154,10 @@ class LBO:
         return_response = self.responses[return_str]
 
         # Allow for searching for N times to create a more refined model
-        if last_score < res.fun:
-            if searches <= self.searches:
-                return None, None, None, None, None
-            else:
-                return self.lbo(prompt, mapping, res.fun, searches + 1)
+        # if last_score < res.fun:
+        #     if searches <= self.searches:
+        #         return None, None, None, None, None
+        #     else:
+        #         return self.lbo(prompt, mapping, res.fun, searches + 1)
         
         return return_str, res.fun, mapping[closest_neighbour], expected_string, return_response
