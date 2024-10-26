@@ -49,7 +49,6 @@ class LBO:
         self.blackbox = blackbox
         self.evaluator = evaluator
         self.searched_points = {}
-        self.responses = {}
         self.PROMPT_LBO = ""
         self.MAPPING_LBO = {}
         
@@ -66,13 +65,6 @@ class LBO:
         self.PROMPT_LBO = prompt
         self.MAPPING_LBO = mapping
         self.searched_points = {}
-        self.responses = {}
-    
-    def format_prompt(self, prompt, suffix):
-        if suffix[0] == '.':
-            return prompt + suffix
-        else:
-            return prompt + ' ' + suffix
     
     def f(self, params):
         x, y = params
@@ -81,20 +73,19 @@ class LBO:
         if closest_point in self.searched_points.keys():
             return self.searched_points[closest_point]
         
-        temp_prompt = self.format_prompt(self.PROMPT_LBO, self.MAPPING_LBO[closest_point].strip())
+        temp_prompt = self.PROMPT_LBO + ' ' + self.MAPPING_LBO[closest_point]
             
         response = self.blackbox.query(temp_prompt)
         
         score = self.evaluator.evaluate(temp_prompt, response)
 
         self.searched_points[closest_point] = score
-        self.responses[temp_prompt] = response
-        
+            
         return self.searched_points[closest_point]
     
     def lbo(self, prompt, mapping, last_score, searches):
         self.reset(prompt, mapping)
-        print("[LBO] Searching for best suffix.")
+        print("[LBO] Searching for LBO")
 
         # Search for maximum and minimum dim
         space = []
@@ -107,7 +98,6 @@ class LBO:
                 if point[i] > max_val:
                     max_val = point[i]
                     
-            # Edge case where min_val and max_val are the same
             if max_val <= min_val:
                 min_val = max_val - 1e-9
                 
@@ -150,14 +140,13 @@ class LBO:
         
         best_x = res.x
         closest_neighbour, _, = self.embeddings.find_closest_neighbor(np.array(best_x), self.MAPPING_LBO.keys())
-        return_str = self.format_prompt(prompt, self.MAPPING_LBO[closest_neighbour].strip())
-        return_response = self.responses[return_str]
+        return_str = self.PROMPT_LBO + " " + self.MAPPING_LBO[closest_neighbour].strip()
 
         # Allow for searching for N times to create a more refined model
         # if last_score < res.fun:
         #     if searches <= self.searches:
-        #         return None, None, None, None, None
+        #         return None, None, None, None
         #     else:
         #         return self.lbo(prompt, mapping, res.fun, searches + 1)
         
-        return return_str, res.fun, mapping[closest_neighbour], expected_string, return_response
+        return return_str, res.fun, mapping[closest_neighbour], expected_string

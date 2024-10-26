@@ -73,5 +73,3 @@ class Evaluator:
         
         self.logger.log(["AI: " + response, "EVALUATOR: " + llm_response, "SCORE: " + str(net_score / len(self.question_ids))])
         return net_score / len(self.question_ids)
-
-

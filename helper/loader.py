@@ -36,4 +36,3 @@ class DatasetLoader(Dataset):
         attention_mask = torch.stack([f['attention_mask'] for f in features])
         labels = torch.stack([f['labels'] for f in features])
         return {'input_ids': input_ids, 'attention_mask': attention_mask, 'labels': labels}
-
