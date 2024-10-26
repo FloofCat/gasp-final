@@ -27,7 +27,7 @@ def main():
     suffix_llm = SuffixLLM(config.suffix_cfg, config.data_cfg)
 
     # Start by training the SuffixLLM
-    if args.task == 'pre-train':
+    if args.task == 'train':
         evaluator = Evaluator(config.evaluator_cfg)
         blackbox = BlackBox(config.blackbox_cfg)
 
@@ -44,8 +44,7 @@ def main():
         inference.generate_data(suffix_llm.retraining_data)
 
         print("Pre-training complete!")
-        
-    elif args.task == 'train':
+
         orpo = ORPO(config.suffix_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
         orpo.train(config.data_cfg["infer_save"])
         
