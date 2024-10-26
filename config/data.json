@@ -1,8 +1,8 @@
 {
     "HF_API_KEY": "",
     "lbo_params": {
-        "acquisition_function": "LCB",
-        "n_calls": 10,
+        "acquisition_function": "EI",
+        "n_calls": 6,
         "seed": 42,
         "acq_optimizer": "sampling",
         "n_initial_points": 2,
