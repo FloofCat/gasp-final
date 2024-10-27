@@ -5,7 +5,7 @@
         "model_path": "./model-cache/falcon-7b/",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-mistral/logs/blackbox-logs.out"
+        "logging_file": "./gasp-llama2/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.5, 
