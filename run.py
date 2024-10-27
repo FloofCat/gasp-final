@@ -55,7 +55,7 @@ def main():
         lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
         inference = Inference(config.data_cfg, suffix_llm, lbo)
         
-        tester = Tester(config.data_cfg, suffix_llm, blackbox)
+        tester = Tester(config.data_cfg, suffix_llm, blackbox, inference)
         tester.evaluate()
         
         print("Evaluation complete!")
