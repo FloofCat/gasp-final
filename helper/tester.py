@@ -91,44 +91,36 @@ class Tester:
                 # Generate the suffixes.
                 startTime = time.time()
                 suffixes, _ = self.suffix_llm.generate_suffix(goal)
-                endTime = time.time() - startTime
                 
                 if len(suffixes) == 0:
                     i -= 1
                     continue
-                
-                time_taken += endTime
-                
-                # Get the suffix.
-                suffix = suffixes[0].strip() 
-                # Remove the last character, if it is a period.
-                suffix = suffix[:-1] if suffix[-1] == "." else suffix
-                query = goal
-                
-                # Check if the suffix[0] is even valid.
-                try:
-                    access = suffix[0]
-                except:
+
+                # Search for the best suffix, reduced LBO.
+                embeddings = self.embeddings.get_embeddings(suffixes)
+
+                if(embeddings.shape[0] - 1 <= 0):
                     i -= 1
                     continue
+
+                reduced_embeddings = self.embeddings.dimensionality_reduction(embeddings)
                 
-                # If the suffix starts with a ., no space.
-                if suffix[0] == ".":
-                    query += suffix
-                else:
-                    query += " " + suffix
-                
-                # Query the blackbox.
-                response = self.blackbox.query(query)
-                
-                # Update the goal.
-                goal = query
+                 # Making the mappings in lower dimension for LBO
+                mappings = {}
+                for j, suffix in enumerate(suffixes):
+                    mappings[tuple(reduced_embeddings[j])] = suffix
+                    
+                prompt, _, _, _, response = self.lbo.lbo(goal, mappings, 2, 0, True)
+                goal = prompt
+                endTime = time.time() - startTime
+
+                time_taken += endTime
                 
                 # Check if the response is successful.
                 success = self.check_success(response)
                 
                 # Log.
-                self.logger.log(["QUERY: " + query, "RESPONSE: " + response, "EPOCH:" + str(i), "SUCCESS: " + str(success)])
+                self.logger.log(["QUERY: " + prompt, "RESPONSE: " + response, "EPOCH:" + str(i), "SUCCESS: " + str(success)])
                 
                 # If successful, break and add to the ASR.
                 if success:
@@ -142,7 +134,7 @@ class Tester:
                     elif i < 10:
                         asr_10 += 1
                     # Log time taken per suffix.
-                    self.logger.log(["QUERY: " + query, "TIME_TAKEN: " + str(time_taken / epoches_taken)])
+                    self.logger.log(["QUERY: " + prompt, "TIME_TAKEN: " + str(time_taken / epoches_taken)])
                     break
         
         print("ASR@1: ", asr_1 / len(self.dataset))

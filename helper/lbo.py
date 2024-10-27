@@ -49,6 +49,7 @@ class LBO:
         self.blackbox = blackbox
         self.evaluator = evaluator
         self.searched_points = {}
+        self.responses = {}
         self.PROMPT_LBO = ""
         self.MAPPING_LBO = {}
         
@@ -65,6 +66,7 @@ class LBO:
         self.PROMPT_LBO = prompt
         self.MAPPING_LBO = mapping
         self.searched_points = {}
+        self.responses = {}
     
     def f(self, params):
         x, y = params
@@ -73,17 +75,22 @@ class LBO:
         if closest_point in self.searched_points.keys():
             return self.searched_points[closest_point]
         
-        temp_prompt = self.PROMPT_LBO + ' ' + self.MAPPING_LBO[closest_point]
+        temp_prompt = self.PROMPT_LBO + ' ' + self.MAPPING_LBO[closest_point].strip()
             
         response = self.blackbox.query(temp_prompt)
         
         score = self.evaluator.evaluate(temp_prompt, response)
 
+        self.responses[self.MAPPING_LBO[closest_point].strip()] = response
         self.searched_points[closest_point] = score
             
         return self.searched_points[closest_point]
     
-    def lbo(self, prompt, mapping, last_score, searches):
+    def lbo(self, prompt, mapping, last_score, searches, inference=False):
+        if inference:
+            self.n_calls = int(self.n_calls / 2)
+            self.n_initial_points = int(self.n_initial_points / 2)
+
         self.reset(prompt, mapping)
         print("[LBO] Searching for LBO")
 
@@ -149,4 +156,4 @@ class LBO:
         #     else:
         #         return self.lbo(prompt, mapping, res.fun, searches + 1)
         
-        return return_str, res.fun, mapping[closest_neighbour], expected_string
+        return return_str, res.fun, mapping[closest_neighbour], expected_string, self.responses[self.MAPPING_LBO[closest_neighbour].strip()]

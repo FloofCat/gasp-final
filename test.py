@@ -7,7 +7,7 @@ evaluator = Evaluator(config.evaluator_cfg)
 logger = Logging("./logs/testing.out")
 
 def read_file():
-    with open("./logs/eval_logs.out", "r") as f:
+    with open("./logs/eval-logs.out", "r") as f:
         return f.readlines()
     
 def read_eval():

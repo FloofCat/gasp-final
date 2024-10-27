@@ -44,7 +44,7 @@ class Inference:
                 for j, suffix in enumerate(suffixes):
                     mappings[tuple(reduced_embeddings[j])] = suffix
                     
-                prompt, score, _, expected_string = self.lbo.lbo(goal, mappings, last_score, searches)
+                prompt, score, _, expected_string, _ = self.lbo.lbo(goal, mappings, last_score, searches)
                 
                 if prompt == None:
                     print("Failed to find a better suffix for epoch: ", epoch)
