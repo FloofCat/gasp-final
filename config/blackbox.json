@@ -5,7 +5,7 @@
         "model_path": "./model-cache/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/5f0b02c75b57c5855da9ae460ce51323ea669d8a/",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-copy5/logs/blackbox-logs.out"
+        "logging_file": "./gasp-copy4/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.7, 
