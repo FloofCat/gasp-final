@@ -51,11 +51,14 @@ def main():
         print("Training complete!")
 
     elif args.task == 'eval':
+        suffix_llm.load_orpo_model(config.blackbox_cfg["black_box_model"]["model"])
+        
+        evaluator = Evaluator(config.evaluator_cfg)
         blackbox = BlackBox(config.blackbox_cfg)
         lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
+
         inference = Inference(config.data_cfg, suffix_llm, lbo)
-        
-        tester = Tester(config.data_cfg, suffix_llm, blackbox, inference)
+        tester = Tester(config.data_cfg, suffix_llm, inference)
         tester.evaluate()
         
         print("Evaluation complete!")

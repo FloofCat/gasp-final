@@ -3,10 +3,9 @@ import time
 import tqdm
 
 class Tester:
-    def __init__(self, config, suffix_llm, blackbox, inference):
+    def __init__(self, config, suffix_llm, inference):
         self.config = config
         self.suffix_llm = suffix_llm
-        self.blackbox = blackbox
         self.inference = inference
         self.dataset_name = config["eval_dataset"]["name"]
         self.dataset_path = config["eval_dataset"]["data_path"]
@@ -72,7 +71,6 @@ class Tester:
         
     def evaluate(self):
         self.load_dataset()
-        self.suffix_llm.load_orpo_model(self.blackbox.blackbox_name)
         
         # Baseline variables
         asr_keywords = [0,0,0,0,0,0,0,0,0,0]
