@@ -1,11 +1,11 @@
 {
     "seed": 42,
     "black_box_model": {
-        "model": "llama-3.1-8b",
-        "model_path": "./model-cache/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/5f0b02c75b57c5855da9ae460ce51323ea669d8a/",
+        "model": "falcon-7b",
+        "model_path": "./model-cache/falcon-7b/",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-copy4/logs/blackbox-logs.out"
+        "logging_file": "./gasp-falcon/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.5, 
