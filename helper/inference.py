@@ -51,6 +51,7 @@ class Inference:
             goal = goal.strip()
             
             while(epoch < self.epoches):
+                epoch += 1
                 suffixes, output_string = self.suffix_llm.generate_suffix(goal)
                 
                 embeddings = self.embeddings.get_embeddings(suffixes)
@@ -68,10 +69,7 @@ class Inference:
                     
                 prompt, score, _, expected_string, _ = self.lbo.lbo(goal, mappings)
                 
-                epoch += 1
-                
                 goal = prompt
-                last_score = score
                 print(f"Epoch: {epoch} | Prompt: {prompt} | Score: {score}")
                 
                 self.prompts.append(prompt)
@@ -89,6 +87,6 @@ class Inference:
         df['chosen'] = self.chosen
         df['rejected'] = self.rejected
         
-        df.to_csv("./gasp-llama3-1/logs/inference.csv", index=False)
+        df.to_csv("./gasp-falcon/logs/inference.csv", index=False)
                     
                     
