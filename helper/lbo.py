@@ -86,11 +86,7 @@ class LBO:
             
         return self.searched_points[closest_point]
     
-    def lbo(self, prompt, mapping, last_score, searches, inference=False):
-        if inference:
-            self.n_calls = int(self.n_calls / 2)
-            self.n_initial_points = int(self.n_initial_points / 2)
-
+    def lbo(self, prompt, mapping):
         self.reset(prompt, mapping)
         print("[LBO] Searching for LBO")
 
@@ -152,12 +148,5 @@ class LBO:
             return_str = self.PROMPT_LBO + self.MAPPING_LBO[closest_neighbour].strip()
         else:
             return_str = self.PROMPT_LBO + " " + self.MAPPING_LBO[closest_neighbour].strip()
-
-        # Allow for searching for N times to create a more refined model
-        # if last_score < res.fun:
-        #     if searches <= self.searches:
-        #         return None, None, None, None
-        #     else:
-        #         return self.lbo(prompt, mapping, res.fun, searches + 1)
         
         return return_str, res.fun, mapping[closest_neighbour], expected_string, self.responses[self.MAPPING_LBO[closest_neighbour].strip()]

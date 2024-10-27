@@ -3,7 +3,6 @@ from .logging import Logging
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    pipeline,
 )
 
 class BlackBox:
@@ -50,9 +49,3 @@ class BlackBox:
         
         self.logger.log(["PROMPT: " + prompt, "BLACKBOX-RESPONSE: " + llm_response])
         return llm_response
-        
-        
-        
-            
-
-            

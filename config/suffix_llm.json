@@ -25,14 +25,14 @@
         "max_length": 256,
         "num_return_sequences": 1,
         "temperature": 0.9,
-        "top_p": 0.95,
+        "top_p": 0.85,
         "repetition_penalty": 1.0,
         "length_penalty": 1.0,
         "max_suffix_length": 25
     },
     "orpo-training": {
-        "beta": 0.1,
-        "num_train_epochs": 10,
+        "beta": 0.25,
+        "num_train_epochs": 15,
         "warmup_steps": 500,
         "weight_decay": 0.01,
         "learning_rate": 2e-4,

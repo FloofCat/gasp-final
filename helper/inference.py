@@ -23,35 +23,29 @@ class Inference:
     def generate_prompt(self, goal):
         startTime = time.time()
         suffixes, _ = self.suffix_llm.generate_suffix(goal)
-
-        embeddings = self.embeddings.get_embeddings(suffixes)
-
-        # If no embeddings are found
-        if(embeddings.shape[0] - 1 <= 0):
-            return None, None, None, None, None
-
-        reduced_embeddings = self.embeddings.dimensionality_reduction(embeddings)
-
-        # Making the mappings in lower dimension for LBO
-        mappings = {}
-        for j, suffix in enumerate(suffixes):
-            mappings[tuple(reduced_embeddings[j])] = suffix
-
-        prompt, score, _, _, response = self.lbo.lbo(goal, mappings, 2, 0)
-        if prompt == None:
-            return None, None, None, None, None
         endTime = time.time() - startTime
 
+        suffix = suffixes[0].strip()
+        # Remove period if it's the last character
+        suffix = suffix[:-1] if suffix[-1] == '.' else suffix
+        
+        # If first character of the suffix is a dot, no need to add a space
+        if suffix[0] == '.':
+            prompt = goal + suffix
+        else:
+            prompt = goal + " " + suffix
+
+        response = self.lbo.blackbox.query(prompt)
+
         # Grade with evaluator
+        score_custom = self.lbo.evaluator.evaluate(prompt, response)
         score_sr = self.lbo.evaluator.evaluate_strongreject(prompt, response)
 
-        return prompt, response, score, score_sr, endTime
+        return prompt, response, score_custom, score_sr, endTime
      
     def generate_data(self, data):
         for i in tqdm.tqdm(range(data.shape[0])):
-            last_score = 2
             epoch = 0
-            searches = 0
             
             goal = data['goal'].iloc[i]
             goal = goal.strip()
@@ -72,14 +66,8 @@ class Inference:
                 for j, suffix in enumerate(suffixes):
                     mappings[tuple(reduced_embeddings[j])] = suffix
                     
-                prompt, score, _, expected_string, _ = self.lbo.lbo(goal, mappings, last_score, searches)
+                prompt, score, _, expected_string, _ = self.lbo.lbo(goal, mappings)
                 
-                if prompt == None:
-                    print("Failed to find a better suffix for epoch: ", epoch)
-                    searches += 1
-                    continue
-                
-                searches = 0
                 epoch += 1
                 
                 goal = prompt

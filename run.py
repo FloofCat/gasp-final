@@ -18,6 +18,37 @@ def get_args():
     args = parser.parse_args()
     return args
 
+def train(config, suffix_llm, evaluator, blackbox):
+    suffix_llm.train_model()
+
+    # Once trained, we need to set it to eval mode.
+    suffix_llm.setup_inference()
+
+    # Initialize necessary classes for ORPO
+    lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
+    inference = Inference(config.data_cfg, suffix_llm, lbo)
+
+    # Generate the data via LBO
+    inference.generate_data(suffix_llm.retraining_data)
+
+    print("Pre-training complete!")
+
+    orpo = ORPO(config.suffix_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
+    orpo.train(config.data_cfg["infer_save"])
+    
+    print("Training complete!")
+
+def test(config, suffix_llm, evaluator, blackbox):
+    suffix_llm.load_orpo_model(config.blackbox_cfg["black_box_model"]["model"])
+
+    lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
+
+    inference = Inference(config.data_cfg, suffix_llm, lbo)
+    tester = Tester(config.data_cfg, suffix_llm, inference)
+    tester.evaluate()
+    
+    print("Evaluation complete!")
+
 def main():
     args = get_args()
     print("Performing task: ", args.task)
@@ -25,43 +56,19 @@ def main():
     # Initialize all necessary classes
     config = Config()
     suffix_llm = SuffixLLM(config.suffix_cfg, config.data_cfg)
+    evaluator = Evaluator(config.evaluator_cfg)
+    blackbox = BlackBox(config.blackbox_cfg)
 
     # Start by training the SuffixLLM
-    if args.task == 'train':
-        evaluator = Evaluator(config.evaluator_cfg)
-        blackbox = BlackBox(config.blackbox_cfg)
+    if args.task == 'all':
+        train(config, suffix_llm, evaluator, blackbox)
+        test(config, suffix_llm, evaluator, blackbox)
 
-        suffix_llm.train_model()
-
-        # Once trained, we need to set it to eval mode.
-        suffix_llm.setup_inference()
-
-        # Initialize necessary classes for ORPO
-        lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
-        inference = Inference(config.data_cfg, suffix_llm, lbo)
-
-        # Generate the data via LBO
-        inference.generate_data(suffix_llm.retraining_data)
-
-        print("Pre-training complete!")
-
-        orpo = ORPO(config.suffix_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
-        orpo.train(config.data_cfg["infer_save"])
-        
-        print("Training complete!")
+    elif args.task == 'train':
+        train(config, suffix_llm, evaluator, blackbox)
 
     elif args.task == 'eval':
-        suffix_llm.load_orpo_model(config.blackbox_cfg["black_box_model"]["model"])
-        
-        evaluator = Evaluator(config.evaluator_cfg)
-        blackbox = BlackBox(config.blackbox_cfg)
-        lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
-
-        inference = Inference(config.data_cfg, suffix_llm, lbo)
-        tester = Tester(config.data_cfg, suffix_llm, inference)
-        tester.evaluate()
-        
-        print("Evaluation complete!")
+        test(config, suffix_llm, evaluator, blackbox)
 
 # Run.
 main()

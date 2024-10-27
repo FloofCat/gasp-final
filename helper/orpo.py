@@ -6,7 +6,6 @@ from peft import (
     get_peft_model,
 )
 
-
 class ORPO:
     def __init__(self, config, suffix_llm, blackbox_name):
         self.config = config
