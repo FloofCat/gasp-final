@@ -10,8 +10,8 @@
         "logging_file": "./gasp-copy4/logs/evaluator-logs.out"
     },
     "evaluator_params": {
-        "temperature": 0.7, 
-        "max_length": 2048,
+        "temperature": 0.0, 
+        "max_length": 3000,
         "top_p": 0.95
     },
     "strongreject_task": "./gasp-copy4/data/strongreject_evaluator_prompt.txt"
