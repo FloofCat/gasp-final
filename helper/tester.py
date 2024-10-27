@@ -10,14 +10,14 @@ class Tester:
         self.dataset_name = config["eval_dataset"]["name"]
         self.dataset_path = config["eval_dataset"]["data_path"]
         self.max_additions = config["eval_max_suffix_additions"]
-        
+
         self.logger = Logging(config["eval_logs"])
         print("Class: Tester Initialized")
     
     def load_dataset(self):
         with open(self.dataset_path, 'r') as f:
             self.dataset = f.readlines()
-        
+                
         print("[Tester] Dataset Loaded")
         
     def check_success(self, response):
