@@ -2,10 +2,10 @@
     "seed": 42,
     "black_box_model": {
         "model": "falcon-7b",
-        "model_path": "./model-cache/falcon-7b/",
+        "model_path": "./model-cache/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/e0bc86c23ce5aae1db576c8cca6f06f1f73af2db/",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-falcon/logs/blackbox-logs.out"
+        "logging_file": "./gasp-mistral/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.5, 
