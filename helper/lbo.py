@@ -147,7 +147,11 @@ class LBO:
         
         best_x = res.x
         closest_neighbour, _, = self.embeddings.find_closest_neighbor(np.array(best_x), self.MAPPING_LBO.keys())
-        return_str = self.PROMPT_LBO + " " + self.MAPPING_LBO[closest_neighbour].strip()
+        # Format properly. If starts with a full stop, no need to add a space.
+        if self.MAPPING_LBO[closest_neighbour].strip()[0] == '.':
+            return_str = self.PROMPT_LBO + self.MAPPING_LBO[closest_neighbour].strip()
+        else:
+            return_str = self.PROMPT_LBO + " " + self.MAPPING_LBO[closest_neighbour].strip()
 
         # Allow for searching for N times to create a more refined model
         # if last_score < res.fun:

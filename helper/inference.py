@@ -1,6 +1,7 @@
 import tqdm
 import pandas as pd
 from .logging import Logging
+import time
 
 class Inference:
     def __init__(self, config, suffix_llm, lbo):
@@ -18,7 +19,34 @@ class Inference:
         self.chosen = []
         self.rejected = []
         print("Class: Inference Initialized")
-        
+
+    def generate_prompt(self, goal):
+        startTime = time.time()
+        suffixes, _ = self.suffix_llm.generate_suffix(goal)
+
+        embeddings = self.embeddings.get_embeddings(suffixes)
+
+        # If no embeddings are found
+        if(embeddings.shape[0] - 1 <= 0):
+            return None, None, None, None, None
+
+        reduced_embeddings = self.embeddings.dimensionality_reduction(embeddings)
+
+        # Making the mappings in lower dimension for LBO
+        mappings = {}
+        for j, suffix in enumerate(suffixes):
+            mappings[tuple(reduced_embeddings[j])] = suffix
+
+        prompt, score, _, _, response = self.lbo.lbo(goal, mappings, 2, 0)
+        if prompt == None:
+            return None, None, None, None, None
+        endTime = time.time() - startTime
+
+        # Grade with evaluator
+        score_sr = self.lbo.evaluator.evaluate_strongreject(prompt, response)
+
+        return prompt, response, score, score_sr, endTime
+     
     def generate_data(self, data):
         for i in tqdm.tqdm(range(data.shape[0])):
             last_score = 2
