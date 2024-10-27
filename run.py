@@ -52,6 +52,8 @@ def main():
 
     elif args.task == 'eval':
         blackbox = BlackBox(config.blackbox_cfg)
+        lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
+        inference = Inference(config.data_cfg, suffix_llm, lbo)
         
         tester = Tester(config.data_cfg, suffix_llm, blackbox)
         tester.evaluate()
