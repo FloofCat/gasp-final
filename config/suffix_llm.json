@@ -10,8 +10,8 @@
         "weight_decay": 0.01,
         "learning_rate": 5e-5,
         "logging_steps": 100,
-        "logging_dir": "./gasp-mistral/logs/finetune-logs/",
-        "output_dir": "./gasp-mistral/logs/finetune-model/",
+        "logging_dir": "./gasp-falcon/logs/finetune-logs/",
+        "output_dir": "./gasp-falcon/logs/finetune-model/",
         "lora": {
             "r": 16,
             "lora_alpha": 32,
@@ -19,7 +19,7 @@
             "lora_dropout": 0.1,
             "bias": "none"
         },
-        "suffix_logs": "./gasp-mistral/logs/suffix-logs.out"
+        "suffix_logs": "./gasp-falcon/logs/suffix-logs.out"
     },
     "inference": {
         "max_length": 256,
@@ -37,8 +37,8 @@
         "weight_decay": 0.01,
         "learning_rate": 2e-4,
         "logging_steps": 100,
-        "logging_dir": "./gasp-mistral/logs/orpo-logs/",
-        "output_dir": "./gasp-mistral/logs/orpo-model/",
+        "logging_dir": "./gasp-falcon/logs/orpo-logs/",
+        "output_dir": "./gasp-falcon/logs/orpo-model/",
         "batch_size": 1,
         "lora": {
             "r": 16,
