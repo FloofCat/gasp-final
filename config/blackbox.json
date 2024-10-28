@@ -1,11 +1,11 @@
 {
     "seed": 42,
     "black_box_model": {
-        "model": "falcon",
+        "model": "llama3",
         "model_path": "",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-falcon/logs/blackbox-logs.out"
+        "logging_file": "./gasp-llama3/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.9, 
