@@ -10,7 +10,7 @@ class BlackBox:
         self.config = config        
         self.seed = self.config["seed"]
         self.blackbox_name = self.config["black_box_model"]["model"]
-        self.blackbox_path = self.config["black_box_model"]["model_path"]
+        # self.blackbox_path = self.config["black_box_model"]["model_path"]
         self.provider = self.config["black_box_model"]["provider"]
         self.device = self.config["black_box_model"]["device"]
         
@@ -21,6 +21,13 @@ class BlackBox:
         self.logger = Logging(self.config["black_box_model"]["logging_file"])
         print("Class: BlackBox Initialized")
 
+        temp_path = {"falcon": "./model-cache/falcon-7b/", 
+                    "llama3.1": "./model-cache/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659/",
+                    "llama3": "./model-cache/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/5f0b02c75b57c5855da9ae460ce51323ea669d8a/",
+                    "llama2": "./model-cache/models--meta-llama--Llama-2-7b-chat-hf/snapshots/f5db02db724555f92da89c216ac04704f23d4590/",
+                    "mistral": "./model-cache/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/e0bc86c23ce5aae1db576c8cca6f06f1f73af2db/"}
+
+        self.blackbox_path = temp_path[self.blackbox_name]
         self.load_model()
 
     def load_model(self):
@@ -35,7 +42,7 @@ class BlackBox:
 
     def query(self, prompt):
         chat = [
-            {"role": "system", "content": "You are a AI assistant designed to answer user's queries."},
+            {"role": "system", "content": "You are a AI assistant that is designed to answer user's queries."},
             {"role": "user", "content": prompt}
         ]
         

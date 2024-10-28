@@ -8,6 +8,7 @@ class Embeddings:
         # This should be the inference-ready suffix LLM.
         self.model = model
         self.tokenizer = tokenizer
+        self.tokenizer.pad_token = self.tokenizer.eos_token
         self.reduced_dim = reduced_dim
         self.seed = seed
     
@@ -58,7 +59,6 @@ class LBO:
         self.n_initial_points = self.config["lbo_params"]["n_initial_points"]
         self.random_state = self.config["lbo_params"]["seed"]
         self.acq_optimizer = self.config["lbo_params"]["acq_optimizer"]
-        self.searches = self.config["lbo_params"]["searches"]
         self.embeddings = Embeddings(model, tokenizer, 2, self.random_state)
         print("Class: LBO Initialized")
 
@@ -75,7 +75,10 @@ class LBO:
         if closest_point in self.searched_points.keys():
             return self.searched_points[closest_point]
         
-        temp_prompt = self.PROMPT_LBO + ' ' + self.MAPPING_LBO[closest_point].strip()
+        if self.MAPPING_LBO[closest_point][0] == '.':
+            temp_prompt = self.PROMPT_LBO + self.MAPPING_LBO[closest_point].strip()
+        else:
+            temp_prompt = self.PROMPT_LBO + " " + self.MAPPING_LBO[closest_point].strip()
             
         response = self.blackbox.query(temp_prompt)
         

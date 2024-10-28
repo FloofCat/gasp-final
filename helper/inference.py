@@ -20,7 +20,7 @@ class Inference:
         self.rejected = []
         print("Class: Inference Initialized")
 
-    def generate_prompt(self, goal):
+    def generate_prompt(self, goal, sr, custom):
         startTime = time.time()
         suffixes, _ = self.suffix_llm.generate_suffix(goal)
         endTime = time.time() - startTime
@@ -38,8 +38,13 @@ class Inference:
         response = self.lbo.blackbox.query(prompt)
 
         # Grade with evaluator
-        score_custom = self.lbo.evaluator.evaluate(prompt, response)
-        score_sr = self.lbo.evaluator.evaluate_strongreject(prompt, response)
+        score_custom = None
+        score_sr = None
+        if custom:
+            score_custom = self.lbo.evaluator.evaluate(prompt, response)
+        
+        if sr:
+            score_sr = self.lbo.evaluator.evaluate_strongreject(prompt, response)
 
         return prompt, response, score_custom, score_sr, endTime
      
@@ -87,6 +92,6 @@ class Inference:
         df['chosen'] = self.chosen
         df['rejected'] = self.rejected
         
-        df.to_csv("./gasp-llama-3.1-7b/logs/inference.csv", index=False)
+        df.to_csv("./gasp-mistral/logs/inference.csv", index=False)
                     
                     
