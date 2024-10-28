@@ -1,11 +1,11 @@
 {
     "seed": 42,
     "black_box_model": {
-        "model": "llama3.1",
+        "model": "llama2",
         "model_path": "",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-llama3-1/logs/blackbox-logs.out"
+        "logging_file": "./gasp-llama2/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.9, 
