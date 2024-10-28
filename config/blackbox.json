@@ -5,7 +5,7 @@
         "model_path": "./model-cache/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659/",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-mistral/logs/blackbox-logs.out"
+        "logging_file": "./gasp-falcon/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.9, 
