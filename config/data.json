@@ -8,18 +8,18 @@
         "n_initial_points": 2,
         "searches": 2
     },
-    "inference_logs": "./gasp-llama2/logs/inference-logs.out",
+    "inference_logs": "./gasp-falcon/logs/inference-logs.out",
     "epochs": 10,
-    "infer_save": "./gasp-llama2/log/inference.csv",
+    "infer_save": "./gasp-falcon/log/inference.csv",
     "dataset": {
         "name": "gasp-dataset",
-        "data_path": "./gasp-llama2/data/harmful_suffixes.csv",
+        "data_path": "./gasp-falcon/data/harmful_suffixes.csv",
         "split": 0.90
     },
     "eval_dataset": {
         "name": "gasp-eval",
-        "data_path": "./gasp-llama2/data/advsuffixes_eval.txt"
+        "data_path": "./gasp-falcon/data/advsuffixes_eval.txt"
     },
-    "eval_logs": "./gasp-llama2/eval-logs.out",
+    "eval_logs": "./gasp-falcon/eval-logs.out",
     "eval_max_suffix_additions": 10
 }
