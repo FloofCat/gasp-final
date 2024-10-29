@@ -89,6 +89,50 @@ class ORPO:
         self.suffix_llm.tokenizer.save_pretrained(f"./gasp-mistral/models/{self.blackbox_name}_orpo")
         print("[ORPO] Training Completed")
 
+    def train_custom(self, data):
+        self.suffix_llm.model.train()
+
+        self.prompt = data["prompt"]
+        self.chosen = data["chosen"]
+        self.rejected = data["rejected"]
+
+        dataset = HFDataset.from_dict({
+            "prompt": self.prompt,
+            "chosen": self.chosen,
+            "rejected": self.rejected
+        })
+
+        orpo_config = ORPOConfig(
+            beta=self.beta,
+            num_train_epochs=self.num_epochs,
+            warmup_steps=self.warmup_steps,
+            weight_decay=self.weight_decay,
+            learning_rate=self.learning_rate,
+            logging_steps=self.logging_steps,
+            logging_dir=self.logging_dir,
+            output_dir=self.output_dir,
+            per_device_train_batch_size=self.batch_size,
+            per_device_eval_batch_size=1,
+            bf16=True,
+            save_strategy='epoch'
+        )
+
+        trainer = ORPOTrainer(
+            model=self.suffix_llm.model,
+            args=orpo_config,
+            train_dataset=dataset,
+            tokenizer=self.suffix_llm.tokenizer
+        )
+
+        print("[ORPO] Training Started")
+        trainer.train()
+        print("[ORPO] Training Completed")
+
+    def save(self):
+        self.suffix_llm.model.save_pretrained(f"./gasp-mistral/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-mistral/models/{self.blackbox_name}_orpo")
+        print("[ORPO] Model Saved")
+
 
 
         

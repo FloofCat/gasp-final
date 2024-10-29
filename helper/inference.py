@@ -56,10 +56,12 @@ class Inference:
 
         return prompt, response, score_custom, score_sr, endTime
     
-    def generate_prompt_lbo(self, goal, sr, custom):
+    def generate_prompt_lbo_v2(self, goal, sr, custom):
+        # Make suffix_llm eval()
+        self.suffix_llm.eval()
+        
         startTime = time.time()
-        suffixes, _ = self.suffix_llm.generate_suffix(goal)
-        endTime = time.time() - startTime
+        suffixes, output_string = self.suffix_llm.generate_suffix(goal)
         
         if suffixes == []:
             return None, None, None, None, endTime
@@ -83,7 +85,7 @@ class Inference:
 
         # If no embeddings are found
         if(embeddings.shape[0] - 1 <= 0):
-            return None, None, None, None, endTime
+            return None, None, None, None, None, None, None
         
         reduced_embeddings = self.embeddings.dimensionality_reduction(embeddings)
 
@@ -92,7 +94,8 @@ class Inference:
         for j, suffix in enumerate(suffixes):
             mappings[tuple(reduced_embeddings[j])] = suffix
         
-        prompt, score, _, _, response = self.lbo.lbo(goal, mappings)
+        prompt, score, _, expected_string, response = self.lbo.lbo(goal, mappings)
+        endTime = time.time() - startTime
 
         score_custom = None
         score_sr = None
@@ -102,7 +105,7 @@ class Inference:
         if sr:
             score_sr = self.lbo.evaluator.evaluate_strongreject(prompt, response)
 
-        return prompt, response, score_custom, score_sr, endTime
+        return prompt, response, score_custom, score_sr, expected_string, output_string, endTime
      
     def generate_data(self, data):
         for i in tqdm.tqdm(range(data.shape[0])):

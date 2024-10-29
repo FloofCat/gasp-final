@@ -51,7 +51,6 @@ class SuffixLLM:
         self.logger = Logging(self.config["model"]["suffix_logs"])
         self.dataset_name = dataset["dataset"]["name"]
         self.dataset_path = dataset["dataset"]["data_path"]
-        self.SPLIT = dataset["dataset"]["split"]
         print("Class: SuffixLLM Initialized")
 
         self.TRAINING = self.check_if_trained()
@@ -62,10 +61,7 @@ class SuffixLLM:
         
         # Shuffle the data
         self.data = self.data.sample(frac=1, random_state=self.seed).reset_index(drop=True)
-        
-        self.training_data = self.data[:int(len(self.data)*self.SPLIT)]
-        self.retraining_data = self.data[int(len(self.data)*self.SPLIT):]
-        print("[SUFFIX-LLM] Dataset loaded; Training Data: ", len(self.training_data), " Retraining Data: ", len(self.retraining_data))
+        print("[SUFFIX-LLM] Dataset loaded")
     
     def check_if_trained(self):
         # Check if model_name + "_finetuned" exists in the models directory
@@ -88,7 +84,7 @@ class SuffixLLM:
         self.tokenizer.pad_token = self.tokenizer.eos_token
         print("[SUFFIX-LLM] Model Loaded")
         
-        self.dataset = DatasetLoader(self.training_data, self.tokenizer)
+        self.dataset = DatasetLoader(self.data, self.tokenizer)
         self.dataloader = DataLoader(self.dataset, batch_size=self.batch_size, collate_fn=self.dataset.data_collator)
                 
         lora_config = LoraConfig(

@@ -13,8 +13,7 @@
     "infer_save": "./gasp-mistral/log/inference.csv",
     "dataset": {
         "name": "gasp-dataset",
-        "data_path": "./gasp-mistral/data/harmful_suffixes.csv",
-        "split": 0.90
+        "data_path": "./gasp-mistral/data/harmful_suffixes.csv"
     },
     "eval_dataset": {
         "name": "gasp-eval",
