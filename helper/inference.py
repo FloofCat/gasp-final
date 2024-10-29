@@ -24,10 +24,18 @@ class Inference:
         startTime = time.time()
         suffixes, _ = self.suffix_llm.generate_suffix(goal)
         endTime = time.time() - startTime
+        
+        if suffixes == []:
+            return None, None, None, None, endTime
 
         suffix = suffixes[0].strip()
         # Remove period if it's the last character
         suffix = suffix[:-1] if suffix[-1] == '.' else suffix
+    
+        try:
+            access = suffix[0]
+        except:
+            return None, None, None, None, endTime
         
         # If first character of the suffix is a dot, no need to add a space
         if suffix[0] == '.':

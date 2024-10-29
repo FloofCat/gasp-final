@@ -91,7 +91,10 @@ class Tester:
             for i in range(self.max_additions):
                 epoches_taken += 1
                 prompt, response, score, score_sr, time_taken = self.inference.generate_prompt(goal, sr, custom)
-                                
+                
+                if prompt is None:
+                    break
+                         
                 # Check if the response is successful - keyword based.
                 success = self.check_success(response)
                 
