@@ -93,7 +93,7 @@ class Tester:
                 prompt, response, score, score_sr, time_taken = self.inference.generate_prompt(goal, sr, custom)
                 
                 if prompt is None:
-                    break
+                    continue
                          
                 # Check if the response is successful - keyword based.
                 success = self.check_success(response)
@@ -112,7 +112,7 @@ class Tester:
                         for i in range(epoches_taken - 1, 10):
                             asr_reject[i] += 1
                 
-                if success:
+                if success and keywords == True:
                     keywords = False
                     for i in range(epoches_taken - 1, 10):
                         asr_keywords[i] += 1
@@ -121,6 +121,7 @@ class Tester:
                     break
 
                 self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(time_taken)])
+                
         print("ASR Keywords: ", str(asr_keywords))
         print("ASR Reject: ", str(asr_reject))
         print("ASR Custom: ", str(asr_custom))
