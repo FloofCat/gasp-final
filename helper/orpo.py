@@ -85,8 +85,8 @@ class ORPO:
         print("[ORPO] Training Started")
         trainer.train()
 
-        self.suffix_llm.model.save_pretrained(f"./gasp-llama2/models/{self.blackbox_name}_orpo")
-        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-llama2/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.model.save_pretrained(f"./gasp-llama3-1/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-llama3-1/models/{self.blackbox_name}_orpo")
         print("[ORPO] Training Completed")
 
 
