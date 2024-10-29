@@ -29,7 +29,7 @@ def test(config, suffix_llm, evaluator, blackbox):
 
     lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
     inference = Inference(config.data_cfg, suffix_llm, lbo)
-    orpo = ORPO(config.orpo_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
+    orpo = ORPO(config.suffix_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
 
     tester = Tester(config.data_cfg, suffix_llm, inference, orpo)
     tester.eval_orpo()
