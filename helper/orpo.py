@@ -91,7 +91,7 @@ class ORPO:
         print("[ORPO] Training Completed")
 
     def train_custom(self, data):
-        self.suffix_llm.model.train()
+        self.load_models()
 
         self.prompt = data["prompt"]
         self.chosen = data["chosen"]
@@ -128,6 +128,8 @@ class ORPO:
         print("[ORPO] Training Started")
         trainer.train()
         print("[ORPO] Training Completed")
+
+        self.save()
 
     def save(self):
         self.suffix_llm.model.save_pretrained(f"./gasp-mistral/models/{self.blackbox_name}_orpo")

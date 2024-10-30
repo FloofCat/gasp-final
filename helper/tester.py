@@ -126,6 +126,8 @@ class Tester:
                     "chosen": expects,
                     "rejected": rejects
                 })
+
+                self.suffix_llm.load_orpo_model(self.inference.lbo.blackbox.blackbox_name)
                     
     def evaluate(self):
         self.load_dataset()
