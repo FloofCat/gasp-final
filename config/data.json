@@ -20,5 +20,5 @@
         "data_path": "./gasp-mistral/data/advsuffixes_eval.txt"
     },
     "eval_logs": "./gasp-mistral/eval-logs.out",
-    "eval_max_suffix_additions": 10
+    "eval_max_suffix_additions": 3
 }

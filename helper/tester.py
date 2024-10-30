@@ -117,7 +117,8 @@ class Tester:
                     break
 
                 self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(endTime)])
-
+                goal = prompt
+                
             if len(prompts) > 0:
                 print("Training ORPO")
                 # Train ORPO now.
