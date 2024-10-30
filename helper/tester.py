@@ -116,7 +116,7 @@ class Tester:
                 if not sr and not custom and not keywords:
                     break
 
-                self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(time_taken)])
+                self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(endTime)])
 
             # Train ORPO now.
             self.orpo.train_custom({

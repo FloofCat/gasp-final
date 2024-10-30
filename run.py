@@ -25,11 +25,13 @@ def train(suffix_llm):
 
 def test(config, suffix_llm, evaluator, blackbox):
     # Load the trained model
-    suffix_llm.setup_inference()
+    # suffix_llm.setup_inference()
 
     lbo = LBO(config.data_cfg, suffix_llm.model, suffix_llm.tokenizer, blackbox, evaluator)
     inference = Inference(config.data_cfg, suffix_llm, lbo)
     orpo = ORPO(config.suffix_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
+
+    orpo.load_models()
 
     tester = Tester(config.data_cfg, suffix_llm, inference, orpo)
     tester.eval_orpo()

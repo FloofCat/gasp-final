@@ -43,6 +43,7 @@ class ORPO:
         )
 
         self.suffix_llm.model = get_peft_model(self.suffix_llm.model, config)
+        print("[ORPO] Models Loaded")
 
     def train(self, dataset_path):
         self.load_models()
