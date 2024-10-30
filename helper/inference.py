@@ -64,7 +64,7 @@ class Inference:
         suffixes, output_string = self.suffix_llm.generate_suffix(goal)
         
         if suffixes == []:
-            return None, None, None, None, None
+            return None, None, None, None, None, None, None
 
         suffix = suffixes[0].strip()
         # Remove period if it's the last character
@@ -73,7 +73,7 @@ class Inference:
         try:
             access = suffix[0]
         except:
-            return None, None, None, None, None
+            return None, None, None, None, None, None, None
         
         # If first character of the suffix is a dot, no need to add a space
         if suffix[0] == '.':
