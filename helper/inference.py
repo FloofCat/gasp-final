@@ -58,8 +58,8 @@ class Inference:
     
     def generate_prompt_lbo_v2(self, goal, sr, custom):
         # Make suffix_llm eval()
-        self.suffix_llm.eval()
-        
+        self.suffix_llm.model.eval()
+
         startTime = time.time()
         suffixes, output_string = self.suffix_llm.generate_suffix(goal)
         
