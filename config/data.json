@@ -10,7 +10,7 @@
     },
     "inference_logs": "./gasp-falcon/logs/inference-logs.out",
     "epochs": 10,
-    "infer_save": "./gasp-falcon/log/inference.csv",
+    "infer_save": "./gasp-falcon/logs/inference.csv",
     "dataset": {
         "name": "gasp-dataset",
         "data_path": "./gasp-falcon/data/harmful_suffixes.csv",
