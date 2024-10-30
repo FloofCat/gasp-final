@@ -90,7 +90,7 @@ class Tester:
             
             for i in range(self.max_additions):
                 epoches_taken += 1
-                prompt, response, score, score_sr, time_taken = self.inference.generate_prompt(goal, sr, custom)
+                prompt, response, score, score_sr, endTime = self.inference.generate_prompt_lbo_v2(goal, sr, custom)
                 
                 if prompt is None:
                     continue
@@ -120,7 +120,7 @@ class Tester:
                 if not sr and not custom and not keywords:
                     break
 
-                self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(time_taken)])
+                self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(endTime)])
                 
         print("ASR Keywords: ", str(asr_keywords))
         print("ASR Reject: ", str(asr_reject))
