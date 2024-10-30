@@ -84,8 +84,8 @@ class Tester:
             keywords = True
 
             prompts = []
-            rejected = []
-            expected = []
+            rejects = []
+            expects = []
 
             for _ in range(self.max_additions):
                 epoches_taken += 1
@@ -95,8 +95,8 @@ class Tester:
                     continue
 
                 prompts.append(goal)
-                rejected.append(rejected)
-                expected.append(expected)
+                rejects.append(rejected)
+                expects.append(expected)
 
                 # Check if the response is successful - keyword based.
                 success = self.check_success(response)
@@ -121,8 +121,8 @@ class Tester:
             # Train ORPO now.
             self.orpo.train_custom({
                 "prompt": prompts,
-                "chosen": expected,
-                "rejected": rejected
+                "chosen": expects,
+                "rejected": rejects
             })
                     
     def evaluate(self):
