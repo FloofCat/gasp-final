@@ -118,12 +118,14 @@ class Tester:
 
                 self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(endTime)])
 
-            # Train ORPO now.
-            self.orpo.train_custom({
-                "prompt": prompts,
-                "chosen": expects,
-                "rejected": rejects
-            })
+            if len(prompts) > 0:
+                print("Training ORPO")
+                # Train ORPO now.
+                self.orpo.train_custom({
+                    "prompt": prompts,
+                    "chosen": expects,
+                    "rejected": rejects
+                })
                     
     def evaluate(self):
         self.load_dataset()
