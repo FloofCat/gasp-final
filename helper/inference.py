@@ -196,6 +196,6 @@ class Inference:
         df['chosen'] = self.chosen
         df['rejected'] = self.rejected
         
-        df.to_csv("./gasp-llama2/logs/inference.csv", index=False)
+        df.to_csv("./gasp-llama3-1/logs/inference.csv", index=False)
                     
                     
