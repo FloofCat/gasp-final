@@ -183,6 +183,8 @@ class SuffixLLM:
         generated_text = self.tokenizer.decode(chat_completion[0], skip_special_tokens=True)
         
         generated_text = generated_text.replace(prompt, "")
+
+        print(generated_text)
                 
         # Split to get the suffixes, as per the delimiter '|', there will be one suffix between 2 |'s
         suffixes = []
