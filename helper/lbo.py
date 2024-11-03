@@ -89,7 +89,7 @@ class LBO:
             
         return self.searched_points[closest_point]
     
-    def lbo(self, prompt, mapping):
+    def lbo(self, prompt, mapping, aq_fn):
         self.reset(prompt, mapping)
         print("[LBO] Searching for LBO")
 
@@ -112,7 +112,7 @@ class LBO:
         res = gp_minimize(
                         self.f, 
                         space, 
-                        acq_func=self.acq_fn,
+                        acq_func=aq_fn,
                         n_calls=self.n_calls,
                         random_state=self.random_state,
                         acq_optimizer=self.acq_optimizer,

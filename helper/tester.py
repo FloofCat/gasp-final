@@ -78,10 +78,9 @@ class Tester:
         asr_custom = [0,0,0,0,0,0,0,0,0,0]
         
         # Evaluate the model
-        for x in tqdm.tqdm(range(len(self.dataset))):
+        for x in tqdm.tqdm(range(len(40))):
             data = self.dataset[x]
             goal = data.strip()
-            time_taken = 0
             epoches_taken = 0
 
             sr = True
@@ -90,7 +89,16 @@ class Tester:
             
             for i in range(self.max_additions):
                 epoches_taken += 1
-                prompt, response, score, score_sr, endTime = self.inference.generate_prompt_lbo_v2(goal, sr, custom)
+                acq_fn = ""
+                if x <= 10:
+                    acq_fn = "LCB"
+                elif x <= 20:
+                    acq_fn = "EI"
+                elif x <= 30:
+                    acq_fn = "PI"
+                else:
+                    acq_fn = "gp_hedge"
+                prompt, response, score, score_sr, endTime = self.inference.generate_prompt_lbo_v2(goal, sr, custom, acq_fn)
                 
                 if prompt is None:
                     continue
@@ -120,7 +128,8 @@ class Tester:
                 if not sr and not custom and not keywords:
                     break
 
-                self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(endTime)])
+                goal = prompt
+                self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(endTime), "ACQ_FN: " + acq_fn])
                 
         print("ASR Keywords: ", str(asr_keywords))
         print("ASR Reject: ", str(asr_reject))
