@@ -78,7 +78,7 @@ class Tester:
         asr_custom = [0,0,0,0,0,0,0,0,0,0]
         
         # Evaluate the model
-        for x in tqdm.tqdm(range(len(self.dataset / 2))):
+        for x in tqdm.tqdm(range(len(self.dataset))):
             data = self.dataset[x]
             goal = data.strip()
             epoches_taken = 0
