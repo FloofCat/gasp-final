@@ -125,10 +125,16 @@ class Tester:
                     for i in range(epoches_taken - 1, 10):
                         asr_keywords[i] += 1
 
+                if x % 10 == 0:
+                    print("ASR Keywords: ", str(asr_keywords))
+                    print("ASR Reject: ", str(asr_reject))
+                    print("ASR Custom: ", str(asr_custom))
+                    
                 if not sr and not custom and not keywords:
                     break
 
                 goal = prompt
+                
                 self.logger.log(["GOAL: " + prompt, "RESPONSE: " + response, "SCORE: " + str(score), "SCORE_SR: " + str(score_sr), "SUCCESS: " + str(success), "TIME_TAKEN: " + str(endTime), "ACQ_FN: " + acq_fn])
                 
         print("ASR Keywords: ", str(asr_keywords))

@@ -4,6 +4,9 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
 )
+# import backoff 
+# import openai
+# from openai import OpenAI
 
 class BlackBox:
     def __init__(self, config):
@@ -29,7 +32,9 @@ class BlackBox:
 
         self.blackbox_path = temp_path[self.blackbox_name]
         self.load_model()
-
+        
+        # self.client = OpenAI()
+        
     def load_model(self):
         self.model = AutoModelForCausalLM.from_pretrained(self.blackbox_path,
                                                         torch_dtype=torch.float16,
@@ -45,6 +50,17 @@ class BlackBox:
             {"role": "system", "content": "You are a AI assistant that is designed to answer user's queries."},
             {"role": "user", "content": prompt}
         ]
+        
+        # @backoff.on_exception(backoff.expo, openai.RateLimitError)
+        # def completions_with_backoff(chat):
+        #     completion = self.client.chat.completions.create(
+        #         model="gpt-4o",
+        #         messages=chat
+        #     )
+            
+        #     return completion.choices[0].message
+        
+        # llm_response = completions_with_backoff(chat)
         
         formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
         inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
