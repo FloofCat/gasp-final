@@ -57,11 +57,11 @@ class BlackBox:
         @backoff.on_exception(backoff.expo, openai.RateLimitError)
         def completions_with_backoff(chat):
             completion = self.client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4o-mini",
                 messages=chat
             )
             
-            return completion.choices[0].message
+            return completion.choices[0].message.content
         
         llm_response = completions_with_backoff(chat)
         
