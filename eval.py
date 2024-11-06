@@ -29,7 +29,7 @@ ASR_10_SR = 0
 ASR_1_KM = 0
 ASR_10_KM = 0
 
-for i in range(len(lines)):
+for i in range(len(lines)):    
     if "----------------------" in lines[i]:
         start = i + 1
         
@@ -118,7 +118,8 @@ for i in range(len(lines)):
     
     data += lines[i]
 
-dataset_count += 1
+dataset_count = 10
+print("Dataset Count: ", dataset_count)
 # Divide by the reach of the dataset
 ASR_1 = ASR_1 / dataset_count
 ASR_10 = ASR_10 / dataset_count
