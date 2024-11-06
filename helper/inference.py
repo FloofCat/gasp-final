@@ -20,7 +20,7 @@ class Inference:
         self.rejected = []
         print("Class: Inference Initialized")
 
-    def generate_prompt_lbo_v2(self, goal, sr, custom, acq_fn):
+    def generate_prompt_lbo_v2(self, goal, sr, custom):
         startTime = time.time()
         suffixes, output_string = self.suffix_llm.generate_suffix(goal)
         
@@ -55,7 +55,7 @@ class Inference:
         for j, suffix in enumerate(suffixes):
             mappings[tuple(reduced_embeddings[j])] = suffix
         
-        prompt, score, _, expected_string, response = self.lbo.lbo(goal, mappings, acq_fn)
+        prompt, score, _, expected_string, response = self.lbo.lbo(goal, mappings)
         endTime = time.time() - startTime
 
         score_custom = None
@@ -196,6 +196,6 @@ class Inference:
         df['chosen'] = self.chosen
         df['rejected'] = self.rejected
         
-        df.to_csv("./gasp-mistral/logs/inference.csv", index=False)
+        df.to_csv("./gasp-gpt4/logs/inference.csv", index=False)
                     
                     

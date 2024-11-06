@@ -4,12 +4,12 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
 )
-# import os
-# os.environ["OPENAI_API_KEY"] = "*************************************************"
+import os
+os.environ["OPENAI_API_KEY"] = "*************************************************"
 
-# import backoff 
-# import openai
-# from openai import OpenAI
+import backoff 
+import openai
+from openai import OpenAI
 
 class BlackBox:
     def __init__(self, config):
@@ -34,9 +34,9 @@ class BlackBox:
                     "mistral": "./model-cache/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/e0bc86c23ce5aae1db576c8cca6f06f1f73af2db/"}
 
         self.blackbox_path = temp_path[self.blackbox_name]
-        self.load_model()
+        # self.load_model()
         
-        # self.client = OpenAI()
+        self.client = OpenAI()
         
     def load_model(self):
         self.model = AutoModelForCausalLM.from_pretrained(self.blackbox_path,
@@ -54,24 +54,24 @@ class BlackBox:
             {"role": "user", "content": prompt}
         ]
         
-        # @backoff.on_exception(backoff.expo, openai.RateLimitError)
-        # def completions_with_backoff(chat):
-        #     completion = self.client.chat.completions.create(
-        #         model="gpt-4o",
-        #         messages=chat
-        #     )
+        @backoff.on_exception(backoff.expo, openai.RateLimitError)
+        def completions_with_backoff(chat):
+            completion = self.client.chat.completions.create(
+                model="gpt-4o",
+                messages=chat
+            )
             
-        #     return completion.choices[0].message
+            return completion.choices[0].message
         
-        # llm_response = completions_with_backoff(chat)
+        llm_response = completions_with_backoff(chat)
         
-        formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
-        inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
-        inputs = {key: tensor.to(self.model.device) for key, tensor in inputs.items()}
+        # formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
+        # inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
+        # inputs = {key: tensor.to(self.model.device) for key, tensor in inputs.items()}
         
-        outputs = self.model.generate(**inputs, max_length=self.max_length, temperature=self.temperature, top_p=self.top_p, do_sample=True)
+        # outputs = self.model.generate(**inputs, max_length=self.max_length, temperature=self.temperature, top_p=self.top_p, do_sample=True)
         
-        llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True)
+        # llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True)
         
         self.logger.log(["PROMPT: " + prompt, "BLACKBOX-RESPONSE: " + llm_response])
         return llm_response
