@@ -25,7 +25,7 @@ class Inference:
         suffixes, output_string = self.suffix_llm.generate_suffix(goal)
         
         if suffixes == []:
-            return None, None, None, None, None, None, None
+            return None, None, None, None, None
 
         suffix = suffixes[0].strip()
         # Remove period if it's the last character
@@ -196,6 +196,6 @@ class Inference:
         df['chosen'] = self.chosen
         df['rejected'] = self.rejected
         
-        df.to_csv("./gasp-gpt4/logs/inference.csv", index=False)
+        df.to_csv("./gasp-mistral/logs/inference.csv", index=False)
                     
                     
