@@ -89,7 +89,7 @@ class Tester:
             
             for i in range(self.max_additions):
                 epoches_taken += 1
-                prompt, response, score, score_sr, endTime = self.inference.generate_prompt(goal, sr, custom)
+                prompt, response, score, score_sr, endTime = self.inference.generate_prompt_lbo_v2(goal, sr, custom)
                 
                 if prompt is None:
                     continue
