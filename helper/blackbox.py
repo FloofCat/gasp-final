@@ -4,10 +4,15 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
 )
+import os
+import google.generativeai as genai
+from google.api_core.exceptions import ResourceExhausted
+genai.configure(api_key="*************************************************")
+
 # import os
 # os.environ["OPENAI_API_KEY"] = "*************************************************"
 
-# import backoff 
+import backoff 
 # import openai
 # from openai import OpenAI
 
@@ -34,8 +39,8 @@ class BlackBox:
                     "mistral": "./model-cache/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/e0bc86c23ce5aae1db576c8cca6f06f1f73af2db/"}
 
         self.blackbox_path = temp_path[self.blackbox_name]
-        self.load_model()
-        
+        # self.load_model()
+        self.model = genai.GenerativeModel(model_name="gemini-1.5-flash")
         # self.client = OpenAI()
         
     def load_model(self):
@@ -65,13 +70,22 @@ class BlackBox:
         
         # llm_response = completions_with_backoff(chat)
         
-        formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
-        inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
-        inputs = {key: tensor.to(self.model.device) for key, tensor in inputs.items()}
+        @backoff.on_exception(backoff.expo, ResourceExhausted)
+        def completions_with_backoff(prompt):
+            response = self.model.generate_content(prompt)
+            
+            return response.text
         
-        outputs = self.model.generate(**inputs, max_length=self.max_length, temperature=self.temperature, top_p=self.top_p, do_sample=True)
         
-        llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True)
+        llm_response = completions_with_backoff(prompt)
         
-        self.logger.log(["PROMPT: " + prompt, "BLACKBOX-RESPONSE: " + llm_response])
+        # formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
+        # inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)
+        # inputs = {key: tensor.to(self.model.device) for key, tensor in inputs.items()}
+        
+        # outputs = self.model.generate(**inputs, max_length=self.max_length, temperature=self.temperature, top_p=self.top_p, do_sample=True)
+        
+        # llm_response = self.tokenizer.decode(outputs[0][inputs['input_ids'].size(1):], skip_special_tokens=True)
+        
+        # self.logger.log(["PROMPT: " + prompt, "BLACKBOX-RESPONSE: " + llm_response])
         return llm_response
