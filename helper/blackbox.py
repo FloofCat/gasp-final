@@ -5,16 +5,16 @@ from transformers import (
     AutoTokenizer,
 )
 import os
-import google.generativeai as genai
-from google.api_core.exceptions import ResourceExhausted
-genai.configure(api_key="*************************************************")
+# import google.generativeai as genai
+# from google.api_core.exceptions import ResourceExhausted
+# genai.configure(api_key="*************************************************")
 
-# import os
-# os.environ["OPENAI_API_KEY"] = "*************************************************"
+import os
+os.environ["OPENAI_API_KEY"] = "*************************************************"
 
 import backoff 
-# import openai
-# from openai import OpenAI
+import openai
+from openai import OpenAI
 
 class BlackBox:
     def __init__(self, config):
@@ -40,8 +40,7 @@ class BlackBox:
 
         self.blackbox_path = temp_path[self.blackbox_name]
         # self.load_model()
-        self.model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-        # self.client = OpenAI()
+        self.client = OpenAI()
         
     def load_model(self):
         self.model = AutoModelForCausalLM.from_pretrained(self.blackbox_path,
@@ -59,25 +58,25 @@ class BlackBox:
             {"role": "user", "content": prompt}
         ]
         
-        # @backoff.on_exception(backoff.expo, openai.RateLimitError)
-        # def completions_with_backoff(chat):
-        #     completion = self.client.chat.completions.create(
-        #         model="gpt-4o-mini",
-        #         messages=chat
-        #     )
+        @backoff.on_exception(backoff.expo, openai.RateLimitError)
+        def completions_with_backoff(chat):
+            completion = self.client.chat.completions.create(
+                model="gpt-3.5-turbo-0125",
+                messages=chat
+            )
             
-        #     return completion.choices[0].message.content
+            return completion.choices[0].message.content
         
-        # llm_response = completions_with_backoff(chat)
+        llm_response = completions_with_backoff(chat)
         
-        @backoff.on_exception(backoff.expo, ResourceExhausted)
-        def completions_with_backoff(prompt):
-            response = self.model.generate_content(prompt)
+        # @backoff.on_exception(backoff.expo, BaseException)
+        # def completions_with_backoff(prompt):
+        #     response = self.model.generate_content(prompt)
             
-            return response.text
+        #     return response.text
         
         
-        llm_response = completions_with_backoff(prompt)
+        # llm_response = completions_with_backoff(prompt)
         
         # formatted_chat = self.tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
         # inputs = self.tokenizer(formatted_chat, return_tensors='pt', add_special_tokens=False, padding=True)

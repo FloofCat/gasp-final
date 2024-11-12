@@ -196,6 +196,6 @@ class Inference:
         df['chosen'] = self.chosen
         df['rejected'] = self.rejected
         
-        df.to_csv("./gasp-gemini/logs/inference.csv", index=False)
+        df.to_csv("./gasp-gpt3/logs/inference.csv", index=False)
                     
                     
