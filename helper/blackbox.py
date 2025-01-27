@@ -11,6 +11,7 @@ import os
 
 import os
 os.environ["OPENAI_API_KEY"] = "*************************************************"
+os.environ["DEEPSEEK_API_KEY"] = "*************************************************"
 
 import backoff 
 import openai
@@ -40,7 +41,7 @@ class BlackBox:
 
         self.blackbox_path = temp_path[self.blackbox_name]
         # self.load_model()
-        self.client = OpenAI()
+        self.client = OpenAI(api_key=os.environ["DEEPSEEK_API_KEY"],  base_url="https://api.deepseek.com")
         
     def load_model(self):
         self.model = AutoModelForCausalLM.from_pretrained(self.blackbox_path,
@@ -60,12 +61,19 @@ class BlackBox:
         
         @backoff.on_exception(backoff.expo, openai.RateLimitError)
         def completions_with_backoff(chat):
-            completion = self.client.chat.completions.create(
-                model="gpt-3.5-turbo-0125",
-                messages=chat
+            # completion = self.client.chat.completions.create(
+            #     model="gpt-3.5-turbo-0125",
+            #     messages=chat
+            # )
+            
+            # return completion.choices[0].message.content
+            response = self.client.chat.completions.create(
+                model="deepseek-chat",
+                messages=chat,
+                stream=False
             )
             
-            return completion.choices[0].message.content
+            return response.choices[0].message.content
         
         llm_response = completions_with_backoff(chat)
         
