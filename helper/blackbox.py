@@ -5,14 +5,14 @@ from transformers import (
     AutoTokenizer,
 )
 import os
+import anthropic
 # import google.generativeai as genai
 # from google.api_core.exceptions import ResourceExhausted
 # genai.configure(api_key="*************************************************")
 
 import os
 os.environ["OPENAI_API_KEY"] = "*************************************************"
-os.environ["DEEPSEEK_API_KEY"] = "*************************************************"
-
+os.environ["ANTHROPIC_API"] = "*************************************************"
 import backoff 
 import openai
 from openai import OpenAI
@@ -41,7 +41,10 @@ class BlackBox:
 
         self.blackbox_path = temp_path[self.blackbox_name]
         # self.load_model()
-        self.client = OpenAI(api_key=os.environ["DEEPSEEK_API_KEY"],  base_url="https://api.deepseek.com")
+        # self.client = OpenAI()
+        self.client = anthropic.Anthropic(
+            api_key=os.environ.get("ANTHROPIC_API"),
+        )
         
     def load_model(self):
         self.model = AutoModelForCausalLM.from_pretrained(self.blackbox_path,
@@ -67,13 +70,11 @@ class BlackBox:
             # )
             
             # return completion.choices[0].message.content
-            response = self.client.chat.completions.create(
-                model="deepseek-chat",
-                messages=chat,
-                stream=False
+            message = self.client.messages.create(
+                model="claude-3-haiku-202403",
+                messages=chat
             )
-            
-            return response.choices[0].message.content
+            return message.choices[0].message.content
         
         llm_response = completions_with_backoff(chat)
         
