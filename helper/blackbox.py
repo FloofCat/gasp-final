@@ -6,6 +6,7 @@ from transformers import (
 )
 import os
 import anthropic
+
 # import google.generativeai as genai
 # from google.api_core.exceptions import ResourceExhausted
 # genai.configure(api_key="*************************************************")
@@ -62,7 +63,7 @@ class BlackBox:
             {"role": "user", "content": prompt}
         ]
         
-        @backoff.on_exception(backoff.expo, openai.RateLimitError)
+        @backoff.on_exception(backoff.expo, BaseException)
         def completions_with_backoff(chat):
             # completion = self.client.chat.completions.create(
             #     model="gpt-3.5-turbo-0125",
