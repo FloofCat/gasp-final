@@ -81,6 +81,7 @@ class BlackBox:
                 return message.choices[0].text
             except Exception as e:
                 print(e)
+                
                 return None
             
         
