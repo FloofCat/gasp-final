@@ -63,7 +63,7 @@ class BlackBox:
             {"role": "user", "content": prompt}
         ]
         
-        @backoff.on_exception(backoff.expo, BaseException)
+        # @backoff.on_exception(backoff.expo, BaseException)
         def completions_with_backoff(chat):
             # completion = self.client.chat.completions.create(
             #     model="gpt-3.5-turbo-0125",
@@ -71,11 +71,17 @@ class BlackBox:
             # )
             
             # return completion.choices[0].message.content
-            message = self.client.messages.create(
-                model="claude-3-haiku-202403",
-                messages=chat
-            )
-            return message.choices[0].message.content
+            
+            try:
+                message = self.client.messages.create(
+                    model="claude-3-haiku-202403",
+                    messages=chat
+                )
+                return message.choices[0].text
+                
+            except Exception as e:
+                print(e)
+                return None
         
         llm_response = completions_with_backoff(chat)
         
