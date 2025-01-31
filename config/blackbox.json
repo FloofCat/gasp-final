@@ -5,7 +5,7 @@
         "model_path": "",
         "provider": "huggingface",
         "device": "cuda:2",
-        "logging_file": "./gasp-claude/logs/blackbox-logs.out"
+        "logging_file": "./gasp-gemini/logs/blackbox-logs.out"
     },
     "black_box_params": {
         "temperature": 0.9, 
