@@ -5,6 +5,31 @@ from peft import (
     LoraConfig,
     get_peft_model,
 )
+from transformers import TrainingArguments, Trainer
+import torch
+from torch.utils.data import Dataset, DataLoader
+
+class FinetuneDataset(Dataset):
+    def __init__(self, prompts, chosen_responses, tokenizer, max_length=512):
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+        self.examples = []
+
+        for prompt, chosen in zip(prompts, chosen_responses):
+            input_text = f"{prompt} {chosen}"  # Concatenating prompt and chosen response
+            tokenized = tokenizer(input_text, max_length=self.max_length, truncation=True, padding="max_length", return_tensors="pt")
+
+            self.examples.append({
+                "input_ids": tokenized["input_ids"].squeeze(),
+                "attention_mask": tokenized["attention_mask"].squeeze(),
+                "labels": tokenized["input_ids"].squeeze()  # Labels are the same as input_ids for causal LM
+            })
+
+    def __len__(self):
+        return len(self.examples)
+
+    def __getitem__(self, idx):
+        return self.examples[idx]
 
 class ORPO:
     def __init__(self, config, suffix_llm, blackbox_name):
@@ -43,6 +68,55 @@ class ORPO:
         )
 
         self.suffix_llm.model = get_peft_model(self.suffix_llm.model, config)
+
+    
+    def train_finetuned(self, dataset_path):
+        self.load_models()
+        self.dataset = pd.read_csv(dataset_path)
+        
+        # Extract prompt and chosen completions
+        self.prompt = self.dataset["prompt"].tolist()
+        self.chosen = self.dataset["chosen"].tolist()
+        
+        # Prepare dataset
+        dataset = FinetuneDataset(self.prompt, self.chosen, self.suffix_llm.tokenizer)
+    
+        # Define training arguments
+        training_args = TrainingArguments(
+            num_train_epochs=self.num_epochs,
+            warmup_steps=self.warmup_steps,
+            weight_decay=self.weight_decay,
+            learning_rate=self.learning_rate,
+            logging_steps=self.logging_steps,
+            logging_dir=self.logging_dir,
+            output_dir=self.output_dir,
+            per_device_train_batch_size=self.batch_size,
+            per_device_eval_batch_size=1,
+            bf16=True,
+            save_strategy='epoch'
+        )
+        
+        # Set model in training mode
+        self.suffix_llm.model.train()
+        
+        trainer = Trainer(
+            model=self.suffix_llm.model,
+            args=training_args,
+            train_dataset=dataset,
+            tokenizer=self.suffix_llm.tokenizer
+        )
+        
+        print("[Fine-Tuning] Training Started")
+        trainer.train()
+        
+        # Save the trained model
+        self.suffix_llm.model.save_pretrained(f"./gasp-finetune/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-finetune/models/{self.blackbox_name}_orpo")
+        
+        # Restore model to eval mode
+        self.suffix_llm.model.eval()
+        print("[Fine-Tuning] Training Completed")
+
 
     def train(self, dataset_path):
         self.load_models()
@@ -85,8 +159,8 @@ class ORPO:
         print("[ORPO] Training Started")
         trainer.train()
 
-        self.suffix_llm.model.save_pretrained(f"./gasp-gemini/models/{self.blackbox_name}_orpo")
-        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-gemini/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.model.save_pretrained(f"./gasp-finetune/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-finetune/models/{self.blackbox_name}_orpo")
         print("[ORPO] Training Completed")
 
 

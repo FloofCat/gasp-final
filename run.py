@@ -34,7 +34,7 @@ def train(config, suffix_llm, evaluator, blackbox):
     print("Pre-training complete!")
 
     orpo = ORPO(config.suffix_cfg, suffix_llm, config.blackbox_cfg["black_box_model"]["model"])
-    orpo.train(config.data_cfg["infer_save"])
+    orpo.train_finetuned(config.data_cfg["infer_save"])
     
     print("Training complete!")
 
