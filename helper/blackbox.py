@@ -33,7 +33,7 @@ class BlackBox:
         self.logger = Logging(self.config["black_box_model"]["logging_file"])
         print("Class: BlackBox Initialized")
 
-        temp_path = {"falcon": "$HOME/CISPA-az6/adv_attacks_llm-2024/baseline/model-cache/falcon-7b/", 
+        temp_path = {"falcon": "./model-cache/falcon-7b/", 
                     "llama3.1": "./model-cache/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659/",
                     "llama3": "./model-cache/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/5f0b02c75b57c5855da9ae460ce51323ea669d8a/",
                     "llama2": "./model-cache/models--meta-llama--Llama-2-7b-chat-hf/snapshots/f5db02db724555f92da89c216ac04704f23d4590/",
