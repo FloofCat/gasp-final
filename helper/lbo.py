@@ -81,7 +81,7 @@ class LBO:
         else:
             temp_prompt = self.PROMPT_LBO + " " + self.MAPPING_LBO[closest_point].strip()
         
-        # SmoothLLM here - just encrypt it.
+        # smoothllm-2 here - just encrypt it.
         perturbed = smooth([temp_prompt], perturb_pct=0.05, n=5)[0]
         score = 0.0
         last_response = None

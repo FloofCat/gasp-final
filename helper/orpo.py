@@ -110,8 +110,8 @@ class ORPO:
         trainer.train()
         
         # Save the trained model
-        self.suffix_llm.model.save_pretrained(f"./gasp-smoothllm/models/{self.blackbox_name}_orpo")
-        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-smoothllm/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.model.save_pretrained(f"./gasp-smoothllm-2/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-smoothllm-2/models/{self.blackbox_name}_orpo")
         
         # Restore model to eval mode
         self.suffix_llm.model.eval()
@@ -159,8 +159,8 @@ class ORPO:
         print("[ORPO] Training Started")
         trainer.train()
 
-        self.suffix_llm.model.save_pretrained(f"./gasp-smoothllm/models/{self.blackbox_name}_orpo")
-        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-smoothllm/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.model.save_pretrained(f"./gasp-smoothllm-2/models/{self.blackbox_name}_orpo")
+        self.suffix_llm.tokenizer.save_pretrained(f"./gasp-smoothllm-2/models/{self.blackbox_name}_orpo")
         print("[ORPO] Training Completed")
 
 
