@@ -5,4 +5,4 @@
 #SBATCH --partition=gpu
 #SBATCH --time 48:00:00
 
-srun --container-image=floofcat/pvt_advattacks:v5 --container-mounts=$HOME/CISPA-az6/adv_attacks_llm-2024/baseline:/root python3 $HOME/CISPA-az6/adv_attacks_llm-2024/baseline/gasp-reminder-2/run.py --task=all
+srun --container-image=floofcat/pvt_advattacks:v5 --container-mounts=$HOME/CISPA-az6/adv_attacks_llm-2024/baseline:/root python3 $HOME/CISPA-az6/adv_attacks_llm-2024/baseline/gasp-smoothllm/run.py --task=all
