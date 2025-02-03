@@ -10,8 +10,8 @@
         "weight_decay": 0.01,
         "learning_rate": 5e-5,
         "logging_steps": 100,
-        "logging_dir": "./gasp-finetune-2/logs/finetune-2-logs/",
-        "output_dir": "./gasp-finetune-2/logs/finetune-2-model/",
+        "logging_dir": "./gasp-reminder/logs/reminder-logs/",
+        "output_dir": "./gasp-reminder/logs/reminder-model/",
         "lora": {
             "r": 16,
             "lora_alpha": 32,
@@ -19,7 +19,7 @@
             "lora_dropout": 0.1,
             "bias": "none"
         },
-        "suffix_logs": "./gasp-finetune-2/logs/suffix-logs.out"
+        "suffix_logs": "./gasp-reminder/logs/suffix-logs.out"
     },
     "inference": {
         "max_length": 256,
@@ -37,8 +37,8 @@
         "weight_decay": 0.01,
         "learning_rate": 2e-4,
         "logging_steps": 100,
-        "logging_dir": "./gasp-finetune-2/logs/orpo-logs/",
-        "output_dir": "./gasp-finetune-2/logs/orpo-model/",
+        "logging_dir": "./gasp-reminder/logs/orpo-logs/",
+        "output_dir": "./gasp-reminder/logs/orpo-model/",
         "batch_size": 1,
         "lora": {
             "r": 16,
