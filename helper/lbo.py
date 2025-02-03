@@ -2,7 +2,7 @@ import torch
 import numpy as np
 from sklearn.manifold import TSNE
 from skopt import gp_minimize
-import perturb
+from .perturb import smooth
 
 class Embeddings:
     def __init__(self, model, tokenizer, reduced_dim, seed):
@@ -82,7 +82,7 @@ class LBO:
             temp_prompt = self.PROMPT_LBO + " " + self.MAPPING_LBO[closest_point].strip()
         
         # SmoothLLM here - just encrypt it.
-        perturbed = perturb.smooth([temp_prompt], perturb_pct=0.05, n=5)[0]
+        perturbed = smooth([temp_prompt], perturb_pct=0.05, n=5)[0]
         score = 0.0
         last_response = None
         for p in perturbed:
