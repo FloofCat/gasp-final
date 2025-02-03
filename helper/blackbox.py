@@ -43,7 +43,7 @@ class BlackBox:
 
         self.blackbox_path = temp_path[self.blackbox_name]
         self.load_model()
-        # self.model = genai.GenerativeModel(model_name="reminder-1.5-flash")
+        # self.model = genai.GenerativeModel(model_name="smoothllm-1.5-flash")
         # self.client = OpenAI()
         
     def load_model(self):
